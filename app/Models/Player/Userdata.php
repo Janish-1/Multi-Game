@@ -40,6 +40,7 @@ class Userdata extends Model
            "in_game_status",
            "tournament_id",
            "table_id",
-           "bid_pay_status",    
+           "bid_pay_status",
+           "matkapicks",    
     ];
 }

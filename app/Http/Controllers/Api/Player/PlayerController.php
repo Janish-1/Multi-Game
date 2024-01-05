@@ -41,7 +41,7 @@ class PlayerController extends Controller
     {
         $gameConfig = Websetting::first();
         $randomNumber = random_int(100000, 999999);
-        $playerid = "LUDO" . random_int(100000, 999999);
+        $playerid = random_int(100000, 999999);
 
         //check google login
         $checkGooglePrevAccount = Userdata::where('useremail', $request->email)->first();

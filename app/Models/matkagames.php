@@ -17,6 +17,7 @@ class matkagames extends Model
         'mlocktime',
         'mstarttime',
         'mamount',
+        'menteramount',
         'mwinball',
         'winner',
     ];

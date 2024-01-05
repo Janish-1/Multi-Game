@@ -154,3 +154,4 @@ Route::post('/deleteallmakta',[matkagame::class,'deleteAllMatkaGames']);
 Route::post('/selectball',[matkagame::class,'pickBall']);
 Route::post('/readonematka',[matkagame::class,'readOneMatkaGame']);
 Route::get('/readall',[matkagame::class,'readAllMatkaGames']);
+Route::post('/checkwinner',[matkagame::class,'checkWinner']);
