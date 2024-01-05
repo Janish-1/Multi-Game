@@ -1,0 +1,2 @@
+Composer Installer : composer install --ignore-platform-reqs
+Run Project with php artisan serve
