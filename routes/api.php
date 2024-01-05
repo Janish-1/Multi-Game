@@ -11,6 +11,7 @@ use App\Http\Controllers\Shopcoin\ShopcoinController;
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\paymentgateway\initiate;
 use App\Http\Controllers\paymentgateway\complete;
+use App\Http\Controllers\matkagame;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,3 +144,13 @@ Route::post('/razorpay/payment/complete',[RazorpayController::class,'Complete'])
 Route::post('/paymentsuccess',[complete::class,'completePay']);
 
 Route::post('/testpayment',[initiate::class,'createpaymentreq']);
+
+
+// Matka Game
+
+Route::post('/creatematka',[matkagame::class,'createMatkaGame']);
+Route::post('/deleteonematka',[matkagame::class,'deleteMatkaGame']);
+Route::post('/deleteallmakta',[matkagame::class,'deleteAllMatkaGames']);
+Route::post('/selectball',[matkagame::class,'pickBall']);
+Route::post('/readonematka',[matkagame::class,'readOneMatkaGame']);
+Route::get('/readall',[matkagame::class,'readAllMatkaGames']);
