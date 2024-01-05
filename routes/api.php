@@ -12,6 +12,7 @@ use App\Http\Controllers\AdsController;
 use App\Http\Controllers\paymentgateway\initiate;
 use App\Http\Controllers\paymentgateway\complete;
 use App\Http\Controllers\matkagame;
+use App\Http\Controllers\spinw;
 
 /*
 |--------------------------------------------------------------------------
@@ -155,3 +156,7 @@ Route::post('/selectball',[matkagame::class,'pickBall']);
 Route::post('/readonematka',[matkagame::class,'readOneMatkaGame']);
 Route::get('/readall',[matkagame::class,'readAllMatkaGames']);
 Route::post('/checkwinner',[matkagame::class,'checkWinner']);
+
+// Spin Wheel
+Route::post('/createspin',[spinw::class,'makeSpin']);
+Route::post('/sendreward',[spinw::class,'sendReward']);

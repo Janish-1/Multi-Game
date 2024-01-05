@@ -169,6 +169,7 @@ class matkagame extends Controller
         $userData = Userdata::where('playerid', $playerId)->first();
         $totalCoins = $userData->totalcoin;
         $menteramount = $matkaGame->menteramount;
+        $winCoin = $matkaGame->mamount; // Assuming this value is available in the MatkaGame model
 
         if ($totalCoins >= $menteramount) {
             // Deduct menteramount from totalcoins
@@ -198,6 +199,11 @@ class matkagame extends Controller
             $matkaGame->mstatus = 'inActive';
             $matkaGame->save();
 
+            // Increase wincoin to the winner's totalcoins
+            $userData->totalcoin += $winCoin;
+            $userData->totalcoin += $menteramount;
+            $userData->save();
+
             // Delete all MatkaNumbers associated with the game
             MatkaNumbers::where('mid', $gameId)->delete();
 
@@ -211,6 +217,7 @@ class matkagame extends Controller
 
             return response()->json($responseData, 200);
         } else {
+
             // Update 'playerid' column in MatkaNumbers with player ID
             MatkaNumbers::where('mid', $gameId)
                 ->where('mvalue', $pickedBall)
