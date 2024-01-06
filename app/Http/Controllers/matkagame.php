@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\matkagames;
 use App\Models\matkanumbers;
 use App\Models\Player\Userdata;
+use Illuminate\Support\Facades\DB;
 
 class matkagame extends Controller
 {
@@ -329,5 +330,37 @@ class matkagame extends Controller
         ];
 
         return response()->json($responseData, 200);
+    }
+
+    public function leaderboard(Request $request){
+        $leaderboard = matkagames::select('winner', 'mamount')
+            ->orderBy('winner')
+            ->orderByDesc('mamount')
+            ->get();
+    
+        $responseData = [];
+        $winners = [];
+        foreach ($leaderboard as $entry) {
+            if (!isset($winners[$entry->winner])) {
+                $winners[$entry->winner] = 0;
+            }
+            $winners[$entry->winner] += $entry->mamount;
+        }
+    
+        foreach ($winners as $winner => $amount) {
+            $responseData[] = [
+                'player_id' => $winner,
+                'win_amount' => $amount,
+            ];
+        }
+    
+        $response = [
+            'responseCode' => 200,
+            'responseMessage' => 'Leaderboard fetched successfully',
+            'success' => true,
+            'data' => $responseData,
+        ];
+    
+        return response()->json($response);
     }
 }

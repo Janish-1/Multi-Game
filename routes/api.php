@@ -156,7 +156,9 @@ Route::post('/selectball',[matkagame::class,'pickBall']);
 Route::post('/readonematka',[matkagame::class,'readOneMatkaGame']);
 Route::get('/readall',[matkagame::class,'readAllMatkaGames']);
 Route::post('/checkwinner',[matkagame::class,'checkWinner']);
+Route::get('/leaderboardm',[matkagame::class,'leaderboard']);
 
 // Spin Wheel
 Route::post('/createspin',[spinw::class,'makeSpin']);
 Route::post('/sendreward',[spinw::class,'sendReward']);
+Route::get('/leaderboards',[spinw::class,'leaderboard']);

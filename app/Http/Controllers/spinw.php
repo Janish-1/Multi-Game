@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Player\Userdata;
+use Illuminate\Support\Facades\DB;
 use App\Models\spinwheel;
 
 class spinw extends Controller
@@ -46,21 +47,21 @@ class spinw extends Controller
         $validatedData = $request->validate([
             'player_id' => 'required',
         ]);
-    
+
         $playerId = $validatedData['player_id'];
         $spinData = Spinwheel::where('player_id', $playerId)->where('is_paid', false)->first();
-    
+
         if ($spinData) {
             $isWinner = $spinData->is_winner;
             $amount = $spinData->amount;
-    
+
             Spinwheel::where('player_id', $playerId)->update(['is_paid' => true]);
-    
+
             // Update the totalcoin based on whether the player won or lost
             Userdata::where('playerid', $playerId)->update([
                 'totalcoin' => Userdata::raw($isWinner ? 'totalcoin + ' . $amount : 'totalcoin - ' . $amount),
             ]);
-    
+
             $responseData = [
                 'responseCode' => 200,
                 'success' => true,
@@ -71,7 +72,7 @@ class spinw extends Controller
                     'amount' => $amount,
                 ],
             ];
-    
+
             return response()->json($responseData, 200);
         } else {
             $errorResponse = [
@@ -79,8 +80,35 @@ class spinw extends Controller
                 'success' => false,
                 'responseMessage' => 'Spin data not found for the player or reward already sent.',
             ];
-    
+
             return response()->json($errorResponse, 404);
         }
+    }
+    public function leaderboard(Request $request)
+    {
+        $leaderboard = Spinwheel::select('player_id', DB::raw('SUM(CASE WHEN is_winner = true THEN win_amount ELSE 0 END) as total_won'))
+            ->where('is_paid', true)
+            ->groupBy('player_id')
+            ->orderByDesc('total_won')
+            ->get();
+    
+        $responseData = [];
+        foreach ($leaderboard as $entry) {
+            if ($entry->total_won > 0) {
+                $responseData[] = [
+                    'player_id' => $entry->player_id,
+                    'total_won' => $entry->total_won,
+                ];
+            }
+        }
+    
+        $response = [
+            'responseCode' => 200,
+            'success' => true,
+            'responseMessage' => 'Leaderboard fetched successfully.',
+            'leaderboard' => $responseData,
+        ];
+    
+        return response()->json($response, 200);
     }
 }
