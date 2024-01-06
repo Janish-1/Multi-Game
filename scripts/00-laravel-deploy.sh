@@ -2,7 +2,7 @@
 echo "Running composer"
 cp /etc/secrets/.env .env
 composer global require hirak/prestissimo
-composer install --no-dev --working-dir=/var/www/html
+composer install --no-dev --working-dir=/var/www/html --ignore-platform-reqs=ext-mongodb
 
 echo "Clearing caches..."
 php artisan optimize:clear
