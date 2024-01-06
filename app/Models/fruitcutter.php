@@ -11,7 +11,6 @@ class fruitcutter extends Model
         'playerid',
         'playerscore',
         'playerlives',
-        'in_game',
     ];
 
     use HasFactory;

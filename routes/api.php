@@ -166,3 +166,6 @@ Route::get('/leaderboards',[spinw::class,'leaderboard']);
 
 // Fruit Cutter
 Route::post('/fcreategame',[fruitgame::class,'start_game']);
+Route::post('/fexitgame',[fruitgame::class,'exit_game']);
+Route::post('/fsetscore',[fruitgame::class,'set_score']);
+Route::post('/fseescore',[fruitgame::class,'get_high_score']);
