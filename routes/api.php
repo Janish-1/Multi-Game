@@ -13,6 +13,7 @@ use App\Http\Controllers\paymentgateway\initiate;
 use App\Http\Controllers\paymentgateway\complete;
 use App\Http\Controllers\matkagame;
 use App\Http\Controllers\spinw;
+use App\Http\Controllers\fruitgame;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,3 +163,6 @@ Route::get('/leaderboardm',[matkagame::class,'leaderboard']);
 Route::post('/createspin',[spinw::class,'makeSpin']);
 Route::post('/sendreward',[spinw::class,'sendReward']);
 Route::get('/leaderboards',[spinw::class,'leaderboard']);
+
+// Fruit Cutter
+Route::post('/fcreategame',[fruitgame::class,'start_game']);
