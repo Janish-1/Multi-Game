@@ -3,7 +3,7 @@ Run Project with php artisan serve
 
 How to push to docker
 
-Create a image: docker build -t myapp-image .
-run a image: docker run -p 8000:80 myapp-image
-tag the image: docker tag local-image-name username/repository:tag
-push the image: docker push username/repository:tag
+Create a image: docker build -t multigame .
+run a image: docker run -p 8000:80 multigame
+tag the image: docker tag multigame janishpancholidocker/multigame:1
+push the image: docker push janishpancholidocker/multigame:1

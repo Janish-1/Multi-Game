@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Routing\UrlGenerator;
 use Illuminate\Database\Schema\Builder;
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,10 +21,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(UrlGenerator $url)
+    public function boot()
     {
         Builder::defaultStringLength(200);
-        $url->forceScheme('https');
     }
 
 }
