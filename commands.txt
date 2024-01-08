@@ -7,3 +7,5 @@ Create a image: docker build -t multigame .
 run a image: docker run -p 8000:80 multigame
 tag the image: docker tag multigame janishpancholidocker/multigame:1
 push the image: docker push janishpancholidocker/multigame:1
+
+vpanel password:VrpCodFb5reQl

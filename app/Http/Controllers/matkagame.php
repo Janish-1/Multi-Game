@@ -203,6 +203,7 @@ class matkagame extends Controller
             // Increase wincoin to the winner's totalcoins
             $userData->totalcoin += $winCoin;
             $userData->totalcoin += $menteramount;
+            $userData->wincoin += $winCoin;
             $userData->save();
 
             // Delete all MatkaNumbers associated with the game

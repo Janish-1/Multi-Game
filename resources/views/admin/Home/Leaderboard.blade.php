@@ -22,10 +22,11 @@
                     <th>Rank</th>
                     <th>Player ID</th>
                     <th>Player Name</th>
-                    <th>Gmail ID</th>
-                    <th>Total Coin</th>
-                    <th>Win Coin</th>
-                    <th>Game Played</th>
+                    <th>Ludo 4 Player</th>
+                    <th>Fruit Score</th>
+                    <th>Fruit Win</th>
+                    <th>Fruit Lose</th>
+                    <th>Coins Won</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -34,10 +35,11 @@
                     <td><span class="font-weight-bold">{{ $userdata->firstItem() + $key }} <i class="las la-trophy"></i></span></td>
                     <td>{{ $result->playerid}}</td>
                     <td>{{ $result->username }}</td>
-                    <td>{{ $result->useremail }}</td>
-                    <td>{{ $result->playcoin }} ₹</td>
-                    <td>{{ $result->wincoin }} ₹</td>
-                    <td>{{ $result->GamePlayed }}</td>
+                    <td>{{ $result->FourPlayWin }}</td>
+                    <td>{{ $result->fruitscore }}</td>
+                    <td>{{ $result->fruitwin }}</td>
+                    <td>{{ $result->fruitlose }}</td>
+                    <td>{{ $result->wincoin }}</td>
                   </tr>
                   @endforeach
                 </tbody>

@@ -92,22 +92,21 @@ class TournamentController extends Controller
     public function CreateTournamentWithTables(Request $request)
     {
         $tournamentData = $request->all();
-        $numberOfTables = $request->input('tables');
-        $gameType = $tournamentData['player_type']; // Assuming 'game_type' is present in $tournamentData
 
         // Generate a unique random tournament ID with up to 5 characters
-        $tournamentId = Str::random(3);
+        $tournamentId = Str::random(5);
 
-        $tournament = Tournament::create(array_merge($tournamentData, ['tournament_id' => $tournamentId]));
+        $tournament = Tournament::create(array_merge($tournamentData, ['tournament_id' => $tournamentId, 'player_type' => "1v3", "nooftables" => 1]));
 
         if ($tournament) {
-            for ($i = 1; $i <= $tournament->nooftables; $i++) {
+            $nooftables = 1;
+            for ($i = 1; $i <= $nooftables; $i++) {
                 // Create tables in TournamentTablemulti for '1v3' game type
                 TournamentTablemulti::create([
                     'tournament_id' => $tournamentId,
                     'table_id' => $i,
                     'game_name' => $tournament->tournament_name . ' ' . $i,
-                    'player_type' => $gameType,
+                    'player_type' => "1v3",
                 ]);
             }
 
@@ -177,8 +176,8 @@ class TournamentController extends Controller
 
     public function enrollPlayerInTable(Request $request)
     {
-        $tournamentId = $request->input('tournament_id');
-        $tableId = $request->input('table_id');
+        $tournamentId = $request->input('game_id');
+        $tableId = 1;
         $playerId = $request->input('player_id');
 
         // Check if the player ID, tournament ID, and table ID are provided
@@ -203,44 +202,21 @@ class TournamentController extends Controller
             return response()->json(['error' => 'Tournament not found.'], 404);
         }
 
-        if ($tournament->player_type === '1v1') {
-            $tableModel = TournamentTablemulti::class;
-            // Retrieve the table instance by tournament and table IDs
-            $table = $tableModel::where('tournament_id', $tournamentId)
-                ->where('table_id', $tableId)
-                ->first();
+        // Get the entry fee from the tournament model
+        $entryFee = $tournament->entry_fee;
 
-            if (!$table) {
-                return response()->json(['error' => 'Table not found for the tournament.'], 404);
-            }
+        $player = UserData::where('playerid', $playerId)->first();
+        if (!$player || $player->totalcoin < $entryFee) {
+            return response()->json(['error' => 'Insufficient balance.'], 400);
+        }
 
-            // Check available slots and enroll the player accordingly
-            if (!$table->player_id1) {
-                $table->player_id1 = $playerId;
-                $table->status = ($table->player_id2) ? '2/2' : '1/2';
-            } elseif (!$table->player_id2) {
-                $table->player_id2 = $playerId;
-                $table->status = '2/2';
-            } else {
-                return response()->json(['message' => 'Table is full.'], 200);
-            }
+        $player->totalcoin -= $entryFee;
+        $player->save();
 
-            // Find the user data or create a new record if it doesn't exist
-            $userData = UserData::updateOrCreate(
-                ['playerid' => $playerId],
-                [
-                    'in_game_status' => true,
-                    'tournament_id' => $tournamentId,
-                    'table_id' => $tableId,
-                ]
-            );
+        $tournament->rewards += $entryFee;
+        $tournament->save();
 
-            // Increment the games_played field by 1
-            $userData->increment('GamePlayed');
-
-            // Save changes to the table instance
-            $table->save();
-        } elseif ($tournament->player_type === '1v3') {
+        if ($tournament->player_type === '1v3') {
             $tableModel = TournamentTablemulti::class;
             // Retrieve the table instance by tournament and table IDs
             $table = $tableModel::where('tournament_id', $tournamentId)
