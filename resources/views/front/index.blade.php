@@ -9,7 +9,7 @@ $home = DB::table('homedetails')->first();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!--favicon icon-->
-    <link rel="icon" href="https://i.ibb.co/X2V26G9/logo-removebg-preview.png" type="image/png" sizes="16x16">
+    <link rel="icon" href="" type="image/png" sizes="16x16">
     <!--title-->
     <title>{{ $web->website_tagline }}</title>
     <!--build:css-->
@@ -26,7 +26,7 @@ $home = DB::table('homedetails')->first();
     <!--preloader start-->
     <div id="preloader">
         <div class="preloader-wrap">
-            <img src="https://i.ibb.co/X2V26G9/logo-removebg-preview.png" alt="logo" width="80"
+            <img src="" alt="logo" width="80"
                 class="img-fluid" />
             <div class="thecube">
                 <div class="cube c1"></div>
@@ -43,7 +43,7 @@ $home = DB::table('homedetails')->first();
         <nav class="navbar navbar-expand-lg fixed-top bg-transparent">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="height:45px;">
-                    <img src="https://i.ibb.co/X2V26G9/logo-removebg-preview.png" alt="logo" height="60px" width="160px"
+                    <img src="" alt="logo" height="60px" width="160px"
                         class="" style="margin-top:1px;" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -84,7 +84,8 @@ $home = DB::table('homedetails')->first();
                             <p class="lead">{{ $home->subheading }}</p>
 
                             <div class="action-btns mt-3">
-                                <a href="{{ url('/') }}/storage/Boomlly.apk"
+                                <!-- <a href="{{ url('/') }}/storage/Boomlly.apk" -->
+                                <a href=""
                                     class="btn btn-brand-03 btn-rounded mr-3">Download Now <i
                                         class="fas fa-cloud-download-alt pl-2"></i></a>
                                 <a href=""
@@ -135,7 +136,7 @@ $home = DB::table('homedetails')->first();
                     </div>
                     <div class="col-md-6 col-sm-6 col-lg-5">
                         <div class="img-wrap">
-                            <img src="https://i.ibb.co/DCtCpfF/banner.png" alt="app image"
+                            <img src="" alt="app image"
                                 class="img-fluid">
                         </div>
                     </div>
@@ -257,7 +258,7 @@ $home = DB::table('homedetails')->first();
                         </div>
                         <div class="col-sm-5 col-md-5 col-lg-4">
                             <div class="about-content-right">
-                                <img src="https://i.ibb.co/DCtCpfF/banner.png" alt="about us"
+                                <img src="" alt="about us"
                                     class="img-fluid">
                             </div>
                         </div>
@@ -347,7 +348,7 @@ $home = DB::table('homedetails')->first();
                     <div class="col-lg-4 col-md-5 d-none d-sm-none d-md-block d-lg-block">
                         <div class="position-relative pb-md-5 py-lg-0">
                             <img alt="Image placeholder"
-                                src="https://i.ibb.co/gZrFGqG/ss6.png"
+                                src=""
                                 class="img-center img-fluid">
                         </div>
                     </div>
@@ -471,7 +472,7 @@ $home = DB::table('homedetails')->first();
                 <div class="row align-items-center">
                     <div class="col-md-12 col-lg-6 mb-5 mb-md-5 mb-sm-5 mb-lg-0">
                         <div class="img-wrap">
-                            <img src="https://i.ibb.co/DCtCpfF/banner.png" alt="download"
+                            <img src="" alt="download"
                                 class="img-fluid">
                         </div>
                     </div>
@@ -690,9 +691,9 @@ $home = DB::table('homedetails')->first();
         <div class="container">
             <center>
                 <div class="list-inline social-list-default background-color social-hover-2 mt-2">
-                    <li class="list-inline-item"><a class="dribbble" href="https://www.instagram.com/boomlly.com_?igshid=OGQ5ZDc2ODk2ZA=="
+                    <li class="list-inline-item"><a class="dribbble" href=""
                             target="_blank"><i class="fab fa-instagram"></i></a></li>
-                    <li class="list-inline-item"><a class="dribbble" href="https://whatsapp.com/channel/0029Va4ydTgAojYnH5E1VQ3U"
+                    <li class="list-inline-item"><a class="dribbble" href=""
                             target="_blank"><i class="fab fa-whatsapp"></i></a></li>
                 </div>
                 <!--foote_bottom_ul_amrc ends here-->

@@ -39,14 +39,14 @@
                     Value</span></a>
         </li>
 
-        <li class="nav-item"><a class="d-flex align-items-center" href="javascript:void(0);"><i class="las la-dice-five"></i><span class="menu-title text-truncate" data-i18n="Invoice">Tournament</span></a>
+        <!-- <li class="nav-item"><a class="d-flex align-items-center" href="javascript:void(0);"><i class="las la-dice-five"></i><span class="menu-title text-truncate" data-i18n="Invoice">Tournament</span></a>
             <ul>
                 <li><a class="d-flex align-items-center" href="{{ url('/') }}/admin/tournament"><i class="las la-star"></i><span class="menu-item" data-i18n="List">Ongoing Tournaments</span></a>
                 </li>
                 <li><a class="d-flex align-items-center" href="{{ url('/') }}/admin/tournament/completed"><i class="las la-star"></i><span class="menu-item" data-i18n="List">Completed Tournaments</span></a>
                 </li>
             </ul>
-        </li>
+        </li> -->
 
         <li class="nav-item"><a class="d-flex align-items-center" href="{{ url('/') }}/admin/leaderboard"><i class="las la-trophy"></i><span class="menu-title text-truncate" data-i18n="Invoice">Leaderboard</span></a>
         </li>
