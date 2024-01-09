@@ -1,0 +1,57 @@
+spin button 3d
+
+spin wheel/fruit wheel
+
+change odds on spin wheel (4/10)
+
+start win 4 times then do probability
+
+after 99 do 00
+
+matka game change to lucky number
+
+3d buttons all
+
+change background color variable
+
+multi users from same login
+
+get all details on the page on clicking profile
+
+make money requests approvable on next day (Not automated for now)
+review system
+
+change model in rummy
+
+7 algorithms for randomizer for spin wheel
+
+For Lucky Game(Matka):
+
+    4 selection , 30 lock , result , new game
+
+    8 to 12 select, result 12:30 , 1 to 4 , result 4:30, 5-8 .,result 8:30, 8:30  result 12:30
+    8 am start to 11:55 am , player selected numbers
+    12:00 to 12:30 , lock game
+    after result same time new start
+
+    sorting to get filtering , on what number is being less 
+
+    Can do both automation and manual winner selector
+
+    automation toggle, in admin panel
+
+tutorial screen for the games in admin panel and unity game
+
+set multiplication for 8 series  10 -> 80 , 20 -> 160 - Matka Game Bets multiplier (variable)
+
+fire effect on eliminate on hitting snake on collision -> snake game
+
+total player total win
+
+hierarchy: lucky - spin - ludo - fruitcutter - rummy - teenpatti - snake
+
+more in ads manager for more images and banners
+
+fix logo in website
+
+first time otp

@@ -9,13 +9,12 @@ $home = DB::table('homedetails')->first();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!--favicon icon-->
-    <link rel="icon" href="" type="image/png" sizes="16x16">
+    <link rel="icon" href="{{ url('/') }}/storage/Brand/{{ $web->favicon }}" type="image/png" sizes="16x16">
     <!--title-->
     <title>{{ $web->website_tagline }}</title>
     <!--build:css-->
 
-    <link rel="stylesheet" type="text/css"
-        href="{{ URL::asset('admin-assets/fonts/line-awesome/line-awesome.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('admin-assets/fonts/line-awesome/line-awesome.css') }}" />
     <link rel="stylesheet" href="{{ URL::asset('admin-assets/vendors/js/sweet-alert/sweetalert.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('admin-assets/vendors/js/sweet-alert/jquery.sweet-modal.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('front-assets/css/main1.css') }}">
@@ -26,8 +25,7 @@ $home = DB::table('homedetails')->first();
     <!--preloader start-->
     <div id="preloader">
         <div class="preloader-wrap">
-            <img src="" alt="logo" width="80"
-                class="img-fluid" />
+        <img src="{{ url('/') }}/storage/Brand/{{ $web->head_logo }}" alt="logo" width="80">
             <div class="thecube">
                 <div class="cube c1"></div>
                 <div class="cube c2"></div>
@@ -43,12 +41,9 @@ $home = DB::table('homedetails')->first();
         <nav class="navbar navbar-expand-lg fixed-top bg-transparent">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="height:45px;">
-                    <img src="" alt="logo" height="60px" width="160px"
-                        class="" style="margin-top:1px;" />
+                    <img src="{{ url('/') }}/storage/Brand/{{ $web->head_logo }}" alt="logo" height="60px" width="160px" class="" style="margin-top:1px;" />
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="ti-menu"></span>
                 </button>
 
@@ -72,33 +67,25 @@ $home = DB::table('homedetails')->first();
 
         <!--hero section start-->
         <section class="ptb-100 bg-image overflow-hidden" image-overlay="10">
-            <div class="hero-bottom-shape-two"
-                style="background: url('assets/img/hero-bottom-shape-2.svg')no-repeat bottom center"></div>
+            <div class="hero-bottom-shape-two" style="background: url('assets/img/hero-bottom-shape-2.svg')no-repeat bottom center"></div>
 
             <div class="container">
-                <div
-                    class="row align-items-center justify-content-lg-between justify-content-md-center justify-content-sm-center">
+                <div class="row align-items-center justify-content-lg-between justify-content-md-center justify-content-sm-center">
                     <div class="col-md-12 col-lg-6">
                         <div class="hero-slider-content text-white py-5">
                             <h1 class="text-white">{{ $home->heading }}</h1>
                             <p class="lead">{{ $home->subheading }}</p>
 
                             <div class="action-btns mt-3">
-                                <!-- <a href="{{ url('/') }}/storage/Boomlly.apk" -->
-                                <a href=""
-                                    class="btn btn-brand-03 btn-rounded mr-3">Download Now <i
-                                        class="fas fa-cloud-download-alt pl-2"></i></a>
-                                <a href=""
-                                    class="popup-youtube btn btn-white btn-circle btn-icon"><i
-                                        class="fas fa-play"></i> </a> <span class="pl-2"> Watch Now</span>
+                                <a href="{{ url('/') }}/storage/Brand/{{ $home->download_link }}" class="btn btn-brand-03 btn-rounded mr-3">Download Now <i class="fas fa-cloud-download-alt pl-2"></i></a>
+                                <a href="{{ $home->contact_video }}" class="popup-youtube btn btn-white btn-circle btn-icon"><i class="fas fa-play"></i> </a> <span class="pl-2"> Watch Now</span>
                             </div>
                             <div class="hero-counter mt-4">
                                 <div class="row">
                                     <div class="col-6 col-sm-4">
                                         <div class="counter-item d-flex align-items-center py-3">
                                             <div class="single-counter-item">
-                                                <span
-                                                    class="h4 count-number text-white">{{ $home->totalinstall }}</span>
+                                                <span class="h4 count-number text-white">{{ $home->totalinstall }}</span>
                                                 <h6 class="text-white mb-0">Total Install</h6>
                                             </div>
                                             <span class="color-6 ml-2 p-2 rounded-circle">
@@ -109,8 +96,7 @@ $home = DB::table('homedetails')->first();
                                     <div class="col-6 col-sm-4">
                                         <div class="counter-item d-flex align-items-center py-3">
                                             <div class="single-counter-item">
-                                                <span
-                                                    class="h4 count-number text-white">{{ $home->totaldownload }}</span>
+                                                <span class="h4 count-number text-white">{{ $home->totaldownload }}</span>
                                                 <h6 class="text-white mb-0">Total Download</h6>
                                             </div>
                                             <span class="color-6 ml-2 p-2 rounded-circle">
@@ -121,8 +107,7 @@ $home = DB::table('homedetails')->first();
                                     <div class="col-6 col-sm-4">
                                         <div class="counter-item d-flex align-items-center py-3">
                                             <div class="single-counter-item">
-                                                <span
-                                                    class="h4 count-number text-white">{{ $home->activeuser }}</span>
+                                                <span class="h4 count-number text-white">{{ $home->activeuser }}</span>
                                                 <h6 class="text-white mb-0">Active Users</h6>
                                             </div>
                                             <span class="color-6 ml-2 p-2 rounded-circle">
@@ -136,8 +121,7 @@ $home = DB::table('homedetails')->first();
                     </div>
                     <div class="col-md-6 col-sm-6 col-lg-5">
                         <div class="img-wrap">
-                            <img src="" alt="app image"
-                                class="img-fluid">
+                            <img src="{{ url('/') }}/storage/Brand/{{ $home->bannerimg }}" alt="app image" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -220,8 +204,7 @@ $home = DB::table('homedetails')->first();
                     <div class="animated-shape-item"></div>
                 </div>
                 <div class="container">
-                    <div
-                        class="row align-items-center justify-content-lg-between justify-content-md-center justify-content-sm-center">
+                    <div class="row align-items-center justify-content-lg-between justify-content-md-center justify-content-sm-center">
                         <div class="col-md-12 col-lg-6 mb-5 mb-md-5 mb-sm-5 mb-lg-0">
                             <div class="about-content-left">
                                 <h2 class="font-weight-bold">{{ $home->about_title }}</h2>
@@ -235,21 +218,24 @@ $home = DB::table('homedetails')->first();
                                     <div class="col-4 col-lg-3 border-right">
                                         <div class="count-data text-center">
                                             <h4 class="count-number mb-0 color-primary font-weight-bold">
-                                                {{ $home->activeuser }}</h4>
+                                                {{ $home->activeuser }}
+                                            </h4>
                                             <span>Customers</span>
                                         </div>
                                     </div>
                                     <div class="col-4 col-lg-3 border-right">
                                         <div class="count-data text-center">
                                             <h4 class="count-number mb-0 color-primary font-weight-bold">
-                                                {{ $home->totaldownload }}</h4>
+                                                {{ $home->totaldownload }}
+                                            </h4>
                                             <span>Downloads</span>
                                         </div>
                                     </div>
                                     <div class="col-4 col-lg-3 border-right">
                                         <div class="count-data text-center">
                                             <h4 class="count-number mb-0 color-primary font-weight-bold">
-                                                {{ $home->satisfieduser }}</h4>
+                                                {{ $home->satisfieduser }}
+                                            </h4>
                                             <span>Satisfied</span>
                                         </div>
                                     </div>
@@ -258,8 +244,7 @@ $home = DB::table('homedetails')->first();
                         </div>
                         <div class="col-sm-5 col-md-5 col-lg-4">
                             <div class="about-content-right">
-                                <img src="" alt="about us"
-                                    class="img-fluid">
+                                <img src="{{ url('/') }}/storage/Brand/{{ $home->about_img }}" alt="about us" class="img-fluid">
                             </div>
                         </div>
                     </div>
@@ -281,8 +266,7 @@ $home = DB::table('homedetails')->first();
                             <div class="action-btns">
                                 <ul class="list-inline">
                                     <li class="list-inline-item my-2">
-                                        <a href="{{ url('/') }}/storage/Brand/{{ $home->download_link }}"
-                                            class="d-flex align-items-center app-download-btn btn btn-brand-02 btn-rounded">
+                                        <a href="{{ url('/') }}/storage/Brand/{{ $home->download_link }}" class="d-flex align-items-center app-download-btn btn btn-brand-02 btn-rounded">
                                             <i class="lab la-android icon-size-sm mr-3"></i>
                                             <div class="download-text text-left">
                                                 <small>Download</small>
@@ -347,9 +331,7 @@ $home = DB::table('homedetails')->first();
                     </div>
                     <div class="col-lg-4 col-md-5 d-none d-sm-none d-md-block d-lg-block">
                         <div class="position-relative pb-md-5 py-lg-0">
-                            <img alt="Image placeholder"
-                                src=""
-                                class="img-center img-fluid">
+                            <img alt="Image placeholder" src="{{ url('/') }}/storage/Brand/{{ $home->download_image }}" class="img-center img-fluid">
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12">
@@ -405,12 +387,11 @@ $home = DB::table('homedetails')->first();
                 <div class="screenshot-wrap">
                     <div class="screenshot-frame"></div>
                     @php
-                        $screenshot = DB::table('screenshots')->get();
+                    $screenshot = DB::table('screenshots')->get();
                     @endphp
                     <div class="screen-carousel owl-carousel owl-theme dot-indicator">
                         @foreach ($screenshot as $result)
-                            <img src="{{ $result->screenshot }}"
-                                class="img-fluid screenshot_slider_image" alt="screenshots" />
+                        <img src="{{ $result->screenshot }}" class="img-fluid screenshot_slider_image" alt="screenshots" />
                         @endforeach
                     </div>
                 </div>
@@ -472,29 +453,26 @@ $home = DB::table('homedetails')->first();
                 <div class="row align-items-center">
                     <div class="col-md-12 col-lg-6 mb-5 mb-md-5 mb-sm-5 mb-lg-0">
                         <div class="img-wrap">
-                            <img src="" alt="download"
-                                class="img-fluid">
+                            <img src="{{ url('/') }}/storage/Brand/{{ $home->download_image }}" alt="download" class="img-fluid">
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div id="accordion" class="accordion faq-wrap">
                             @php
-                                $faq = DB::table('faqs')->get();
+                            $faq = DB::table('faqs')->get();
                             @endphp
 
                             @foreach ($faq as $result)
-                                <div class="card mb-3">
-                                    <a class="card-header " data-toggle="collapse"
-                                        href="#collapse{{ $result->id }}" aria-expanded="false">
-                                        <h6 class="mb-0 d-inline-block">{{ $result->faq_title }}</h6>
-                                    </a>
-                                    <div id="collapse{{ $result->id }}" class="collapse"
-                                        data-parent="#accordion">
-                                        <div class="card-body white-bg">
-                                            <p>{{ $result->faq_desc }}</p>
-                                        </div>
+                            <div class="card mb-3">
+                                <a class="card-header " data-toggle="collapse" href="#collapse{{ $result->id }}" aria-expanded="false">
+                                    <h6 class="mb-0 d-inline-block">{{ $result->faq_title }}</h6>
+                                </a>
+                                <div id="collapse{{ $result->id }}" class="collapse" data-parent="#accordion">
+                                    <div class="card-body white-bg">
+                                        <p>{{ $result->faq_desc }}</p>
                                     </div>
                                 </div>
+                            </div>
                             @endforeach
                         </div>
                     </div>
@@ -517,27 +495,26 @@ $home = DB::table('homedetails')->first();
                         <div class="testimonial-content-wrap">
                             <div class="owl-carousel owl-theme client-testimonial-1 dot-indicator testimonial-shape">
                                 @php
-                                    $testimonial = DB::table('testimonials')->get();
+                                $testimonial = DB::table('testimonials')->get();
                                 @endphp
                                 @foreach ($testimonial as $result)
-                                    <div class="item">
-                                        <div class="testimonial-quote-wrap">
-                                            <div class="media author-info mb-3">
-                                                <div class="author-img mr-3">
-                                                    <img src="{{ $result->profile_image }}"
-                                                        alt="client" class="" width="85px" height="120px">
-                                                </div>
-                                                <div class="media-body text-white">
-                                                    <h5 class="mb-0 text-white">{{ $result->username }}</h5>
-                                                    <span>{{ $result->Designation }}</span>
-                                                </div>
-                                                <i class="fas fa-quote-right text-white"></i>
+                                <div class="item">
+                                    <div class="testimonial-quote-wrap">
+                                        <div class="media author-info mb-3">
+                                            <div class="author-img mr-3">
+                                                <img src="{{ $result->profile_image }}" alt="client" class="" width="85px" height="120px">
                                             </div>
-                                            <div class="client-say text-white">
-                                                <p>{{ $result->Review }}</p>
+                                            <div class="media-body text-white">
+                                                <h5 class="mb-0 text-white">{{ $result->username }}</h5>
+                                                <span>{{ $result->Designation }}</span>
                                             </div>
+                                            <i class="fas fa-quote-right text-white"></i>
+                                        </div>
+                                        <div class="client-say text-white">
+                                            <p>{{ $result->Review }}</p>
                                         </div>
                                     </div>
+                                </div>
                                 @endforeach
                             </div>
                         </div>
@@ -557,26 +534,22 @@ $home = DB::table('homedetails')->first();
                     <div class="col-md-12 col-lg-5 mb-5 mb-md-5 mb-sm-5 mb-lg-0">
                         <div class="contact-us-form gray-light-bg rounded p-5">
                             <h4>Ready to get started?</h4>
-                            <form method="post" action="{{ route('create.contact.new') }}" id="contactForm"
-                                class="contact_form_submit contact-us-form">
+                            <form method="post" action="{{ route('create.contact.new') }}" id="contactForm" class="contact_form_submit contact-us-form">
                                 @csrf
                                 <div class="form-row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="name"
-                                                placeholder="Enter name" required="required">
+                                            <input type="text" class="form-control" name="name" placeholder="Enter name" required="required">
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" name="email"
-                                                placeholder="Enter email" required="required">
+                                            <input type="email" class="form-control" name="email" placeholder="Enter email" required="required">
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="subject"
-                                                placeholder="Subject" required="required">
+                                            <input type="text" class="form-control" name="subject" placeholder="Subject" required="required">
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -641,7 +614,8 @@ $home = DB::table('homedetails')->first();
                     <h5 class="headin5_amrc col_white_amrc pt2">About us</h5>
                     <!--headin5_amrc-->
                     <p class="mb10">
-                        {{ \Illuminate\Support\Str::limit($home->about_desc, 250, $end = '...') }}</p>
+                        {{ \Illuminate\Support\Str::limit($home->about_desc, 250, $end = '...') }}
+                    </p>
                 </div>
 
 
@@ -690,11 +664,15 @@ $home = DB::table('homedetails')->first();
 
         <div class="container">
             <center>
-                <div class="list-inline social-list-default background-color social-hover-2 mt-2">
-                    <li class="list-inline-item"><a class="dribbble" href=""
+            <div class="list-inline social-list-default background-color social-hover-2 mt-2">
+                    <li class="list-inline-item"><a class="twitter" href="{{ $web->twitter }}"
+                            target="_blank"><i class="fab fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a class="youtube" href="{{ $web->youtube }}"
+                            target="_blank"><i class="fab fa-youtube"></i></a></li>
+                    <li class="list-inline-item"><a class="linkedin" href="{{ $web->linkedin }}"
+                            target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                    <li class="list-inline-item"><a class="dribbble" href="{{ $web->instagram }}"
                             target="_blank"><i class="fab fa-instagram"></i></a></li>
-                    <li class="list-inline-item"><a class="dribbble" href=""
-                            target="_blank"><i class="fab fa-whatsapp"></i></a></li>
                 </div>
                 <!--foote_bottom_ul_amrc ends here-->
                 <p class="text-center">{{ $web->copyright }}</p>
