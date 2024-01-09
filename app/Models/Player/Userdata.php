@@ -41,6 +41,7 @@ class Userdata extends Model
            "tournament_id",
            "table_id",
            "bid_pay_status",
-           "matkapicks",    
+           "matkapicks",
+           "spins",    
     ];
 }

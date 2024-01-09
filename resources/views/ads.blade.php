@@ -122,6 +122,56 @@ Ads Settings
                         </form>
                         <!--/ form -->
                     </div>
+                    <div role="tabpanel" class="tab-pane active" id="account-vertical-general-2" aria-labelledby="account-pill-general-2" aria-expanded="true">
+                        <!-- form 2 -->
+                        <form id="adForm3" class="general_setting" method="post" action="{{ route('update.Ad.imaged') }}" enctype="multipart/form-data" data-parsley-validate autocomplete="off">
+                            @csrf
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="lab la-pagelines font-medium-3 mr-1"></i>
+                                        <h4 class="font-weight-bold mb-0 ml-75">Ad Banner</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-success">For Best Quality Upload 732x616 Pixels Image</small>
+                                    <div class="form-group">
+                                        <label class="form-label">Banner Image</label>
+                                        <input type="file" accept="image/*" required class="dropify head_logo" name="ad" data-height="176" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary mt-2 mr-1 float-right">Update Banner Image</button>
+                            </div>
+                        </form>
+                        <!--/ form -->
+                    </div>
+                    <div role="tabpanel" class="tab-pane active" id="account-vertical-general-2" aria-labelledby="account-pill-general-2" aria-expanded="true">
+                        <!-- form 2 -->
+                        <form id="adForm3" class="general_setting" method="post" action="{{ route('update.Ad.imagee') }}" enctype="multipart/form-data" data-parsley-validate autocomplete="off">
+                            @csrf
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="lab la-pagelines font-medium-3 mr-1"></i>
+                                        <h4 class="font-weight-bold mb-0 ml-75">Update Ad C</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-success">For Best Quality Upload 732x616 Pixels Image</small>
+                                    <div class="form-group">
+                                        <label class="form-label">Update Ad C</label>
+                                        <input type="file" accept="image/*" required class="dropify head_logo" name="ad" data-height="176" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary mt-2 mr-1 float-right">Update Ad C</button>
+                            </div>
+                        </form>
+                        <!--/ form -->
+                    </div>
                 </div>
             </div>
         </div>

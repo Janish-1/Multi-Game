@@ -176,7 +176,6 @@ Route::group(['middleware' => 'admin_auth'], function () {
         Route::get('/transction/success', [KycController::class, 'AllSuccessTransaction']);
         Route::get('/transction/fail', [KycController::class, 'AllFailTransaction']);
 
-
         //Notification Routing
 
         Route::get('/notification', [NotificationController::class, 'Index']);

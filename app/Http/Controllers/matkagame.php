@@ -364,4 +364,102 @@ class matkagame extends Controller
     
         return response()->json($response);
     }
+    public function pickaball(Request $request)
+    {
+        $gameId = $request->input('game_id'); // Assuming 'game_id' is sent in the request
+        $playerId = $request->input('player_id'); // Assuming 'player_id' is sent in the request
+        $pickedBall = $request->input('picked_ball'); // User input for the picked ball
+
+        // Find the Matka game by ID
+        $matkaGame = MatkaGames::where('mid', $gameId)->first();
+
+        if (!$matkaGame) {
+            $errorResponse = [
+                'responseCode' => 404,
+                'success' => false,
+                'responseMessage' => 'Matka game not found.',
+                'responseData' => null,
+            ];
+
+            return response()->json($errorResponse, 404);
+        }
+
+        $winBall = $matkaGame->mwinball; // Get the winning ball number
+
+        $isWinner = ($pickedBall == $winBall); // Check if the picked ball matches the win ball
+
+        // Fetch userdata to check totalcoins
+        $userData = Userdata::where('playerid', $playerId)->first();
+        $totalCoins = $userData->totalcoin;
+        $menteramount = $matkaGame->menteramount;
+        $winCoin = $matkaGame->mamount; // Assuming this value is available in the MatkaGame model
+
+        if ($totalCoins >= $menteramount) {
+            // Deduct menteramount from totalcoins
+            $userData->totalcoin -= $menteramount;
+            $userData->save();
+        } else {
+            // Error response if totalcoins are insufficient
+            $errorResponse = [
+                'responseCode' => 400,
+                'success' => false,
+                'responseMessage' => 'Insufficient coins.',
+                'responseData' => null,
+            ];
+
+            return response()->json($errorResponse, 400);
+        }
+
+        if ($isWinner) {
+            // Update MatkaGames 'winner' column with player ID
+            $matkaGame->update(['winner' => $playerId]);
+
+            // Increment 'mopened' and decrement 'mclosed' in MatkaGames
+            $matkaGame->increment('mopened');
+            $matkaGame->decrement('mclosed');
+
+            // Update 'mstatus' field to 'inActive'
+            $matkaGame->mstatus = 'inActive';
+            $matkaGame->save();
+
+            // Increase wincoin to the winner's totalcoins
+            $userData->totalcoin += $winCoin;
+            $userData->totalcoin += $menteramount;
+            $userData->wincoin += $winCoin;
+            $userData->save();
+
+            // Delete all MatkaNumbers associated with the game
+            MatkaNumbers::where('mid', $gameId)->delete();
+
+            $responseData = [
+                'responseCode' => 200,
+                'success' => true,
+                'responseMessage' => 'Ball picked successfully. Player is a winner!',
+                'pickedBall' => $pickedBall,
+                'isWinner' => true,
+            ];
+
+            return response()->json($responseData, 200);
+        } else {
+
+            // Update 'playerid' column in MatkaNumbers with player ID
+            MatkaNumbers::where('mid', $gameId)
+                ->where('mvalue', $pickedBall)
+                ->update(['mplayer' => $playerId]);
+
+            // Increment 'mopened' and decrement 'mclosed' in MatkaGames
+            $matkaGame->increment('mopened');
+            $matkaGame->decrement('mclosed');
+
+            $responseData = [
+                'responseCode' => 200,
+                'success' => true,
+                'responseMessage' => 'Ball picked successfully. Player did not win.',
+                'pickedBall' => $pickedBall,
+                'isWinner' => false,
+            ];
+
+            return response()->json($responseData, 200);
+        }
+    }
 }

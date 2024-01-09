@@ -191,4 +191,105 @@ class AdsController extends Controller
     
         return back()->with('error', 'No file was uploaded.');
     }
+    public function updateAdd(Request $request)
+    {
+        $request->validate([
+            'ad' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        try {
+            if ($request->hasFile('ad')) {
+                $response = Cloudinary::upload($request->file('ad')->getRealPath())->getSecurePath();
+    
+                $host = env('DB_HOST');
+                $dbname = env('DB_DATABASE');
+                $username = env('DB_USERNAME');
+                $password = env('DB_PASSWORD');
+    
+                try {
+                    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    // Perform database operations...
+                } catch (PDOException $e) {
+                    echo "Connection failed: " . $e->getMessage();
+                }
+    
+                $sql = "UPDATE ads SET url = :url WHERE unique_index = :uniqueIndex";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute(['url' => $response, 'uniqueIndex' => 3]); // Change the unique index as needed
+    
+                // Log successful file upload and database update
+                Log::info('File uploaded and ad updated!', [
+                    'file_name' => $request->file('ad')->getClientOriginalName(),
+                    'file_size' => $request->file('ad')->getSize(),
+                    'secure_url' => $response,
+                ]);
+    
+                return back()->with('success', 'File uploaded successfully!');
+            }
+        } catch (\Exception $e) {
+            // Log the caught exception details
+            Log::error('Error occurred while uploading file or updating database: ' . $e->getMessage(), [
+                'file_name' => $request->file('ad')->getClientOriginalName(),
+                'file_size' => $request->file('ad')->getSize(),
+                'exception_message' => $e->getMessage(),
+                'exception_trace' => $e->getTraceAsString(),
+            ]);
+    
+            return back()->with('error', 'An error occurred while uploading the file.');
+        }
+    
+        return back()->with('error', 'No file was uploaded.');
+    }
+
+    public function updateAde(Request $request)
+    {
+        $request->validate([
+            'ad' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        try {
+            if ($request->hasFile('ad')) {
+                $response = Cloudinary::upload($request->file('ad')->getRealPath())->getSecurePath();
+    
+                $host = env('DB_HOST');
+                $dbname = env('DB_DATABASE');
+                $username = env('DB_USERNAME');
+                $password = env('DB_PASSWORD');
+    
+                try {
+                    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    // Perform database operations...
+                } catch (PDOException $e) {
+                    echo "Connection failed: " . $e->getMessage();
+                }
+    
+                $sql = "UPDATE ads SET url = :url WHERE unique_index = :uniqueIndex";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute(['url' => $response, 'uniqueIndex' => 3]); // Change the unique index as needed
+    
+                // Log successful file upload and database update
+                Log::info('File uploaded and ad updated!', [
+                    'file_name' => $request->file('ad')->getClientOriginalName(),
+                    'file_size' => $request->file('ad')->getSize(),
+                    'secure_url' => $response,
+                ]);
+    
+                return back()->with('success', 'File uploaded successfully!');
+            }
+        } catch (\Exception $e) {
+            // Log the caught exception details
+            Log::error('Error occurred while uploading file or updating database: ' . $e->getMessage(), [
+                'file_name' => $request->file('ad')->getClientOriginalName(),
+                'file_size' => $request->file('ad')->getSize(),
+                'exception_message' => $e->getMessage(),
+                'exception_trace' => $e->getTraceAsString(),
+            ]);
+    
+            return back()->with('error', 'An error occurred while uploading the file.');
+        }
+    
+        return back()->with('error', 'No file was uploaded.');
+    }
 }

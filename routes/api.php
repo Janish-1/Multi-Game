@@ -69,6 +69,8 @@ Route::get('/ads', [AdsController::class,'index']);
 Route::post('/ads/updateimage/a', [AdsController::class, 'UpdateAda'])->name('update.Ad.imagea');
 Route::post('/ads/updateimage/b', [AdsController::class, 'UpdateAdb'])->name('update.Ad.imageb');
 Route::post('/ads/updateimage/c', [AdsController::class, 'UpdateAdc'])->name('update.Ad.imagec');
+Route::post('/ads/updateimage/d', [AdsController::class, 'UpdateAdd'])->name('update.Ad.imaged');
+Route::post('/ads/updateimage/e', [AdsController::class, 'UpdateAde'])->name('update.Ad.imagee');
 Route::get('/getads',[AdsController::class, 'getAllAds']);
 Route::post('/tournament/winner',[TournamentController::class, 'tournamentwinner']);
 Route::post('/addTotalCoin',[PlayerController::class, 'addTotalCoin']);
@@ -85,6 +87,7 @@ Route::post('/approvewithdraw',[PlayerController::class, 'approveWithdraw']);
 Route::post('/rejectwithdraw',[PlayerController::class, 'rejectWithdraw']);
 Route::post('/paymentinitiate',[initiate::class, 'createpaymentreq']);
 Route::post('/paymentcomplete',[complete::class, 'completePay']);
+Route::get('/commonleaderboard',[HomeController::class,'fetchLeaderboardData']);
 
 // This route is for payment initiate page
 
@@ -104,11 +107,16 @@ Route::post('/readonematka',[matkagame::class,'readOneMatkaGame']);
 Route::get('/readall',[matkagame::class,'readAllMatkaGames']);
 Route::post('/checkwinner',[matkagame::class,'checkWinner']);
 Route::get('/leaderboardm',[matkagame::class,'leaderboard']);
+Route::post('/pickaball',[matkagame::class,'pickaball']);
 
 // Spin Wheel
 Route::post('/createspin',[spinw::class,'makeSpin']);
 Route::post('/sendreward',[spinw::class,'sendReward']);
 Route::get('/leaderboards',[spinw::class,'leaderboard']);
+Route::post('/getspins',[spinw::class,'getSpins']);
+Route::post('/increasespins',[spinw::class,'increaseSpins']);
+Route::post('/decresespins',[spinw::class,'decreaseSpins']);
+Route::post('/dailyincspins',[spinw::class,'increaseAllSpins'])->name('daily.spin.increase');
 
 // Fruit Cutter
 Route::post('/fcreategame',[fruitgame::class,'start_game']);
@@ -121,5 +129,3 @@ Route::post('/fdecrease_player_lives', [fruitgame::class, 'decrease_player_lives
 Route::get('/fleaderboard',[fruitgame::class,'get_top_players']);
 Route::post('/increment_fruit_win', [fruitgame::class, 'increment_fruit_win']);
 Route::post('/decrement_fruit_lose', [fruitgame::class, 'decrement_fruit_lose']);
-
-Route::get('/commonleaderboard',[HomeController::class,'fetchLeaderboardData']);

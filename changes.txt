@@ -18,8 +18,7 @@ multi users from same login
 
 get all details on the page on clicking profile
 
-make money requests approvable on next day (Not automated for now)
-review system
+make money requests approvable on next day (Not automated for now) - review system
 
 change model in rummy
 

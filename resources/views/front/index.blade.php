@@ -9,7 +9,7 @@ $home = DB::table('homedetails')->first();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!--favicon icon-->
-    <link rel="icon" href="{{ url('/') }}/storage/Brand/{{ $web->favicon }}" type="image/png" sizes="16x16">
+    <link rel="icon" href="{{ url('/') }}/storage/Brand/{{ $web->favicon }}" type="image/png" sizes="5x5">
     <!--title-->
     <title>{{ $web->website_tagline }}</title>
     <!--build:css-->
@@ -41,7 +41,7 @@ $home = DB::table('homedetails')->first();
         <nav class="navbar navbar-expand-lg fixed-top bg-transparent">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="height:45px;">
-                    <img src="{{ url('/') }}/storage/Brand/{{ $web->head_logo }}" alt="logo" height="60px" width="160px" class="" style="margin-top:1px;" />
+                    <img src="{{ url('/') }}/storage/Brand/{{ $web->head_logo }}" alt="logo" height="90px" width="90px" class="" style="margin-top:1px;" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="ti-menu"></span>
