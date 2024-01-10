@@ -607,4 +607,74 @@ class TournamentController extends Controller
 
         return Response::json(['data' => $responseData], 200);
     }
+
+    public function ludoplayerwin(Request $request)
+    {
+        $playerId = $request->input('player_id');
+
+        // Check if the player ID is provided
+        if (!$playerId) {
+            return response()->json(['error' => 'Player ID is missing.'], 400);
+        }
+
+        // Find or create a record for the player and increment FourPlayWin by 1
+        $userData = Userdata::updateOrCreate(
+            ['playerid' => $playerId],
+            []
+        );
+
+        // Increment the FourPlayWin field by 1
+        $userData->increment('FourPlayWin');
+
+        // Update user's status as needed
+        UserData::updateOrCreate(
+            ['playerid' => $playerId],
+            [
+                'in_game_status' => false,
+                'tournament_id' => null,
+                'table_id' => null,
+                'bid_pay_status' => false,
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'FourPlayWin incremented successfully',
+        ], 200);
+    }
+
+    public function ludoplayerloss(Request $request)
+    {
+        $playerId = $request->input('player_id');
+
+        // Check if the player ID is provided
+        if (!$playerId) {
+            return response()->json(['error' => 'Player ID is missing.'], 400);
+        }
+
+        // Find or create a record for the player and increment FourPlayloss by 1
+        $userData = Userdata::updateOrCreate(
+            ['playerid' => $playerId],
+            []
+        );
+
+        // Increment the FourPlayloss field by 1
+        $userData->increment('FourPlayloss');
+
+        // Update user's status as needed
+        UserData::updateOrCreate(
+            ['playerid' => $playerId],
+            [
+                'in_game_status' => false,
+                'tournament_id' => null,
+                'table_id' => null,
+                'bid_pay_status' => false,
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'FourPlayloss incremented successfully',
+        ], 200);
+    }
 }

@@ -42,6 +42,14 @@ class Userdata extends Model
            "table_id",
            "bid_pay_status",
            "matkapicks",
-           "spins",    
+           "spins",
+           "rummywins",
+           "rummyloss",
+           "teenpattiwins",
+           "teenpattiloss",
+           "matkawins",
+           "matkaloss",
+           "spinwins",
+           "spinloss",   
     ];
 }

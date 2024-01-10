@@ -47,36 +47,36 @@ class spinw extends Controller
         $validatedData = $request->validate([
             'player_id' => 'required',
         ]);
-    
+
         $playerId = $validatedData['player_id'];
         $spinData = Spinwheel::where('player_id', $playerId)->where('is_paid', false)->get();
-    
+
         if ($spinData->isNotEmpty()) {
             $responseData = [];
-    
+
             foreach ($spinData as $spin) {
                 $isWinner = $spin->is_winner;
                 $amount = $spin->amount;
-    
+
                 // Calculate the change in totalcoin and wincoin based on the is_winner status
                 $totalcoinChange = $isWinner ? $amount : -$amount;
                 $wincoinChange = $isWinner ? $amount : 0;
-    
+
                 DB::transaction(function () use ($playerId, $totalcoinChange, $wincoinChange) {
                     Spinwheel::where('player_id', $playerId)->update(['is_paid' => true]);
-    
+
                     Userdata::where('playerid', $playerId)->increment('totalcoin', $totalcoinChange);
                     Userdata::where('playerid', $playerId)->increment('wincoin', $wincoinChange);
                     Userdata::where('playerid', $playerId)->increment('spinwins');
                 });
-    
+
                 $responseData[] = [
                     'player_id' => $playerId,
                     'is_winner' => $isWinner,
                     'amount' => $amount,
                 ];
             }
-    
+
             return response()->json([
                 'responseCode' => 200,
                 'success' => true,
@@ -89,11 +89,11 @@ class spinw extends Controller
                 'success' => false,
                 'responseMessage' => 'Spin data not found for the player or reward already sent.',
             ];
-    
+
             return response()->json($errorResponse, 404);
         }
     }
-    
+
     public function leaderboard(Request $request)
     {
         $leaderboard = Spinwheel::select('player_id', DB::raw('SUM(CASE WHEN is_winner = true THEN win_amount ELSE 0 END) as total_won'))
@@ -121,92 +121,160 @@ class spinw extends Controller
 
         return response()->json($response, 200);
     }
-    public function getSpins(Request $request){
+    public function getSpins(Request $request)
+    {
         $playerid = $request->input('playerid');
-    
+
         $userData = Userdata::where('playerid', $playerid)->first();
-        
+
         if ($userData) {
             $spins = $userData->spins; // Retrieving spins
             $response = [
                 'responseCode' => 200,
+                'success' => true,
                 'responseMessage' => 'Spins retrieved successfully',
                 'responseData' => ['spins' => $spins]
             ];
         } else {
             $response = [
                 'responseCode' => 404,
+                'success' => false,
                 'responseMessage' => 'User data not found',
                 'responseData' => []
             ];
         }
-    
+
         return response()->json($response);
     }
-    public function increaseSpins(Request $request){
+    public function increaseSpins(Request $request)
+    {
         $playerid = $request->input('playerid');
         $increaseBy = $request->input('increase_by');
-    
+
         $userData = Userdata::where('playerid', $playerid)->first();
-        
+
         if ($userData) {
             $userData->spins += $increaseBy;
             $userData->save();
-    
+
             $response = [
                 'responseCode' => 200,
+                'success' => true,
                 'responseMessage' => 'Spins increased successfully',
                 'responseData' => ['new_spins' => $userData->spins]
             ];
         } else {
             $response = [
                 'responseCode' => 404,
+                'success' => false,
                 'responseMessage' => 'User data not found',
                 'responseData' => []
             ];
         }
-    
+
         return response()->json($response);
     }
-    public function decreaseSpins(Request $request){
+    public function decreaseSpins(Request $request)
+    {
         $playerid = $request->input('playerid');
         $decreaseBy = $request->input('decrease_by');
-    
+
         $userData = Userdata::where('playerid', $playerid)->first();
-        
+
         if ($userData) {
             $userData->spins -= $decreaseBy;
             $userData->save();
-    
+
             $response = [
                 'responseCode' => 200,
+                'success' => true,
                 'responseMessage' => 'Spins decreased successfully',
                 'responseData' => ['new_spins' => $userData->spins]
             ];
         } else {
             $response = [
                 'responseCode' => 404,
+                'success' => false,
                 'responseMessage' => 'User data not found',
                 'responseData' => []
             ];
         }
-    
+
         return response()->json($response);
     }
-    public function increaseAllSpins(Request $request){
+    public function increaseAllSpins(Request $request)
+    {
         $users = Userdata::all();
-    
+
         foreach ($users as $user) {
             $user->spins += 1;
             $user->save();
         }
-    
+
         $response = [
             'responseCode' => 200,
+            'success' => true,
             'responseMessage' => 'Spins increased for all players by 1',
             'responseData' => []
         ];
-    
+
+        return response()->json($response);
+    }
+    public function increaseSpinWins(Request $request)
+    {
+        $playerId = $request->input('player_id');
+
+        $userData = Userdata::where('playerid', $playerId)->first();
+
+        if ($userData) {
+            $userData->spins += 1;
+            $userData->spinwins += 1;
+            $userData->save();
+
+            $response = [
+                'responseCode' => 200,
+                'success' => true,
+                'responseMessage' => 'Spinwins increased successfully',
+                'responseData' => ['new_spinwins' => $userData->spinwins]
+            ];
+        } else {
+            $response = [
+                'responseCode' => 404,
+                'success' => false,
+                'responseMessage' => 'User data not found',
+                'responseData' => []
+            ];
+        }
+
+        return response()->json($response);
+    }
+
+    public function increaseSpinLoss(Request $request)
+    {
+        $playerId = $request->input('player_id');
+
+        $userData = Userdata::where('playerid', $playerId)->first();
+
+        if ($userData) {
+            $userData->spins += 1;
+            $userData->spinloss += 1;
+            $userData->save();
+
+            $response = [
+                'responseCode' => 200,
+                'success' => true,
+                'responseMessage' => 'Spinloss increased successfully',
+                'responseData' => ['new_spinloss' => $userData->spinloss]
+            ];
+        } else {
+            $response = [
+                'responseCode' => 404,
+                'success' => false,
+                'responseMessage' => 'User data not found',
+                'responseData' => []
+            ];
+        }
+
         return response()->json($response);
     }
 }

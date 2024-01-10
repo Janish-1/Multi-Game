@@ -508,4 +508,53 @@ class matkagame extends Controller
             'responseData' => $pickCounts,
         ], 200);
     }
+    public function increaseWins(Request $request)
+    {
+        $playerId = $request->input('player_id');
+
+        $userData = Userdata::where('playerid', $playerId)->first();
+
+        if ($userData) {
+            $userData->matkawins += 1;
+            $userData->save();
+
+            return response()->json([
+                'responseCode' => 200,
+                'success' => true,
+                'responseMessage' => 'Wins increased successfully',
+                'new_wins_count' => $userData->matkawins,
+            ], 200);
+        } else {
+            return response()->json([
+                'responseCode' => 404,
+                'success' => false,
+                'responseMessage' => 'User data not found',
+            ], 404);
+        }
+    }
+
+    public function increaseLosses(Request $request)
+    {
+        $playerId = $request->input('player_id');
+
+        $userData = Userdata::where('playerid', $playerId)->first();
+
+        if ($userData) {
+            $userData->matkaloss += 1;
+            $userData->save();
+
+            return response()->json([
+                'responseCode' => 200,
+                'success' => true,
+                'responseMessage' => 'Losses increased successfully',
+                'new_losses_count' => $userData->matkaloss,
+            ], 200);
+        } else {
+            return response()->json([
+                'responseCode' => 404,
+                'success' => false,
+                'responseMessage' => 'User data not found',
+            ], 404);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\cardsgames;
 use App\Http\Controllers\Home\HomeController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RestApi\PaymentGateway\Razorpay\RazorpayController;
@@ -88,6 +89,8 @@ Route::post('/rejectwithdraw',[PlayerController::class, 'rejectWithdraw']);
 Route::post('/paymentinitiate',[initiate::class, 'createpaymentreq']);
 Route::post('/paymentcomplete',[complete::class, 'completePay']);
 Route::get('/commonleaderboard',[HomeController::class,'fetchLeaderboardData']);
+Route::post('/ludowin',[TournamentController::class,'ludoplayerwin']);
+Route::post('/ludoloss',[TournamentController::class, 'ludoplayerloss']);
 
 // This route is for payment initiate page
 
@@ -111,6 +114,8 @@ Route::post('/pickaball',[matkagame::class,'pickaball']);
 Route::post('/payoutplayers',[matkagame::class,'payoutNumbers']);
 Route::post('/makegameinactive',[matkagame::class,'makeGameInactive']);
 Route::post('/gamepicks',[matkagame::class,'gamepicks']);
+Route::post('/matkadecrease',[matkagame::class,'increaseLosses']);
+Route::post('/matkaincrease',[matkagame::class,'increaseWins']);
 
 // Spin Wheel
 Route::post('/createspin',[spinw::class,'makeSpin']);
@@ -120,6 +125,8 @@ Route::post('/getspins',[spinw::class,'getSpins']);
 Route::post('/increasespins',[spinw::class,'increaseSpins']);
 Route::post('/decresespins',[spinw::class,'decreaseSpins']);
 Route::post('/dailyincspins',[spinw::class,'increaseAllSpins'])->name('daily.spin.increase');
+Route::post('/spinwinincrease',[spinw::class,'increaseSpinWins']);
+Route::post('/spinwindecrease',[spinw::class,'increaseSpinLoss']);
 
 // Fruit Cutter
 Route::post('/fcreategame',[fruitgame::class,'start_game']);
@@ -132,3 +139,8 @@ Route::post('/fdecrease_player_lives', [fruitgame::class, 'decrease_player_lives
 Route::get('/fleaderboard',[fruitgame::class,'get_top_players']);
 Route::post('/increment_fruit_win', [fruitgame::class, 'increment_fruit_win']);
 Route::post('/decrement_fruit_lose', [fruitgame::class, 'decrement_fruit_lose']);
+
+Route::post('/incrummywins',[cardsgames::class,'increaseRummyWins']);
+Route::post('/decrummywins',[cardsgames::class,'decreaseRummyWins']);
+Route::post('/inctpwins',[cardsgames::class,'increaseTeenPattiWins']);
+Route::post('/dectpwins',[cardsgames::class,'decreaseTeenPattiWins']);
