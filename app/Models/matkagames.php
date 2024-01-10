@@ -19,7 +19,6 @@ class matkagames extends Model
         'mamount',
         'menteramount',
         'mwinball',
-        'winner',
     ];
 
     use HasFactory;

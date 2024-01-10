@@ -9,9 +9,10 @@ class matkanumbers extends Model
 {
     protected $fillable = [
         'mid',
-        'mname',
+        'mpick',
         'mvalue',
         'mplayer',
+        'winner',
     ];
 
     use HasFactory;
