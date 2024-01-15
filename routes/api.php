@@ -147,3 +147,5 @@ Route::post('/incrummywins',[cardsgames::class,'increaseRummyWins']);
 Route::post('/decrummywins',[cardsgames::class,'decreaseRummyWins']);
 Route::post('/inctpwins',[cardsgames::class,'increaseTeenPattiWins']);
 Route::post('/dectpwins',[cardsgames::class,'decreaseTeenPattiWins']);
+
+Route::get('/getstatuscode',[matkagame::class,'statuschecker']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WebSetting\Websetting;
 use Illuminate\Http\Request;
 use App\Models\matkagames;
 use App\Models\matkanumbers;
@@ -29,6 +30,11 @@ class matkagame extends Controller
         ]);
 
         if ($matkaGame) {
+
+            Websetting::where('id', 1)
+                ->update([
+                    'lucky_num_status' => 0
+                ]);
 
             $responseData = [
                 'responseCode' => 201,
@@ -444,6 +450,11 @@ class matkagame extends Controller
 
         $matkaGame->save();
 
+        Websetting::where('id', 1)
+            ->update([
+                'lucky_num_status' => 3
+            ]);
+
         return response()->json([
             'responseCode' => 200,
             'success' => true,
@@ -463,6 +474,11 @@ class matkagame extends Controller
         // Make the game inactive
         $matkaGame->mstatus = "lock";
         $matkaGame->save();
+
+        Websetting::where('id', 1)
+            ->update([
+                'lucky_num_status' => 1
+            ]);
 
         return response()->json([
             'responseCode' => 200,
@@ -551,23 +567,23 @@ class matkagame extends Controller
     {
         $mid = $request->input('mid');
         $mwinball = $request->input('mwinball');
-    
+
         // Update matkagames
         $gameUpdated = matkagames::where('mid', $mid)->update([
             'mwinball' => $mwinball
         ]);
-    
+
         // Update matkanumbers
         $numbersUpdated = matkanumbers::where('mid', $mid)->update([
             'mvalue' => ($mwinball) * 8,
         ]);
-    
+
         matkanumbers::where('mid', $mid)
             ->where('mpick', $mwinball) // Add this condition
             ->update([
                 'winner' => 1,
             ]);
-    
+
         if ($gameUpdated && $numbersUpdated) {
             return response()->json([
                 'responseCode' => 200,
@@ -582,7 +598,7 @@ class matkagame extends Controller
             ], 500);
         }
     }
-        public function closegame(Request $request)
+    public function closegame(Request $request)
     {
         $gamefound = matkagames::where('mstatus', 'open')
             ->orWhere('mstatus', 'lock')
@@ -592,6 +608,11 @@ class matkagame extends Controller
             $gamefound->update([
                 'mstatus' => 'closed',
             ]);
+
+            Websetting::where('id', 1)
+                ->update([
+                    'lucky_num_status' => 2
+                ]);
 
             return response()->json([
                 'responseCode' => 200,
@@ -636,7 +657,50 @@ class matkagame extends Controller
 
         return response()->json($responseData, 200);
     }
-    public function statuschecker(Request $request){
-        
+    public function statuschecker(Request $request)
+    {
+        $getsettings = Websetting::where('id', 1)->first();
+        $getstatuscode = $getsettings->lucky_num_status;
+
+        if ($getstatuscode === null) {
+            $responseData = [
+                'responseCode' => 404,
+                'success' => true,
+                'responseMessage' => 'Invalid Status , Eliminate Lucky Number',
+                'reponseData' => [
+                    'responseCode' => $getstatuscode,
+                ],
+            ];
+
+            return response()->json($responseData, 404);
+        }
+
+        if ($getstatuscode === 0) {
+            $message = "Game Started";
+        }
+
+        if ($getstatuscode === 1) {
+            $message = "Game Locked";
+        }
+
+        if ($getstatuscode === 2) {
+            $message = "Game Closed/Error";
+        }
+
+        if ($getstatuscode === 3) {
+            $message = "Start New Game";
+        }
+
+        $responseData = [
+            'responseCode' => 200,
+            'success' => true,
+            'responseMessage' => 'Found Success Status Code',
+            'reponseData' => [
+                'responseCode' => $getstatuscode,
+                'currentstatus' => $message,
+            ],
+        ];
+
+        return response()->json($responseData, 200);
     }
 }

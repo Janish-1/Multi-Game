@@ -315,7 +315,10 @@ class PlayerController extends Controller
             $otp = $this->generateOTPCode($otpLength); // Generate a new OTP if the generated one already exists
         }
 
-        return $otp;
+        return response()->json([
+            "success"=>true,
+            "OTP"=>$otp
+            ]);
     }
 
     // Function to generate a random OTP
@@ -348,7 +351,7 @@ class PlayerController extends Controller
             $currentTime = now()->timestamp;
             $elapsedTime = $currentTime - $createdAt;
 
-            if ($elapsedTime <= 30) {
+            if ($elapsedTime <= 240) {
                 // OTP is valid and within the expiration time
                 // Return success message as JSON response
                 return response()->json([
