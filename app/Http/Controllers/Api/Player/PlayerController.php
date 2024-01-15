@@ -301,7 +301,10 @@ class PlayerController extends Controller
         $userData->created_at = now(); // Store the creation time
         $userData->save();
 
-        return $otp;
+        return response()->json([
+            "success"=>true,
+            "OTP"=>$otp
+            ]);    
     }
 
     // Function to generate a unique six-digit OTP
@@ -315,10 +318,7 @@ class PlayerController extends Controller
             $otp = $this->generateOTPCode($otpLength); // Generate a new OTP if the generated one already exists
         }
 
-        return response()->json([
-            "success"=>true,
-            "OTP"=>$otp
-            ]);
+        return $otp;
     }
 
     // Function to generate a random OTP
