@@ -12,6 +12,7 @@ class matkanumbers extends Model
         'mpick',
         'mvalue',
         'mplayer',
+        'mbid',
         'winner',
     ];
 

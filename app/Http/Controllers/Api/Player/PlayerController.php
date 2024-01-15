@@ -217,7 +217,7 @@ class PlayerController extends Controller
     {
         $gameConfig = Websetting::first();
         $randomNumber = random_int(100000, 999999);
-        $playerid = "LUDO" . random_int(1000000, 9999999);
+        $playerid = random_int(100000, 999999);
 
         $CheckDevice = Userdata::where('device_token', $request->device_token)->first();
         if ($CheckDevice != "") {

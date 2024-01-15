@@ -107,13 +107,6 @@
                         <span class="font-weight-bold">Refund Policy</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="account-pill-spin" data-toggle="pill" href="#account-vertical-spin"
-                        aria-expanded="false">
-                        <i class="las la-undo-alt font-medium-3 mr-1"></i>
-                        <span class="font-weight-bold">Spin Wheel</span>
-                    </a>
-                </li>
             </ul>
         </div>
         <!--/ left menu section -->
@@ -849,28 +842,6 @@
                             <!--/ form -->
                         </div>
                         <!--/ Privacy Policy -->
-                        <div role="tabpanel" class="tab-pane" id="account-vertical-spin"
-                            aria-labelledby="account-pill-spin" aria-expanded="true">
-                            <!-- form -->
-                            <form class="general_setting" method="post" action="{{ route('daily.spin.increase') }}"
-                                data-parsley-validate autocomplete="off">
-                                @csrf
-                                <div class="row">
-                                    <!-- social header -->
-                                    <div class="col-12">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <i class="las la-globe-europe font-medium-3 mr-1"></i>
-                                            <h4 class="font-weight-bold mb-0 ml-75">Add Daily Spin</h4>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-primary mt-2 mr-1 float-left">Add
-                                            Daily Spins</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <!--/ form -->
-                        </div>
                     </div>
                 </div>
             </div>

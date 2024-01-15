@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WebSetting\Websetting;
 use Illuminate\Http\Request;
 use App\Models\Player\Userdata;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,45 @@ use App\Models\spinwheel;
 
 class spinw extends Controller
 {
+    public function spinWheelIndex()
+    {
+        // Your logic for the Spin Wheel page goes here
+        return view('admin.spinwheel'); // Replace 'admin.spinwheel' with the actual view name
+    }
+
+    public function setodds(Request $request)
+    {
+        $validatedData = $request->validate([
+            'spinodds' => 'required|numeric|min:0|max:10',
+        ]);
+
+        $spinOdds = $validatedData['spinodds'];
+
+        // Update or create the odds in the websettings table
+        $websettings = Websetting::updateOrCreate(
+            ['id' => 1], // Assuming there is only one row, adjust if needed
+            ['spin_odds' => $spinOdds]
+        );
+
+        if ($websettings) {
+            $response = [
+                'responseCode' => 200,
+                'success' => true,
+                'responseMessage' => 'Spin Wheel odds set successfully.',
+                'responseData' => ['spin_odds' => $spinOdds],
+            ];
+        } else {
+            $response = [
+                'responseCode' => 500,
+                'success' => false,
+                'responseMessage' => 'Failed to set Spin Wheel odds.',
+                'responseData' => [],
+            ];
+        }
+
+        return response()->json($response, $websettings ? 200 : 500);
+    }
+
     public function makeSpin(Request $request)
     {
         $validatedData = $request->validate([
@@ -17,8 +57,16 @@ class spinw extends Controller
             'lose_amount' => 'required|numeric',
         ]);
 
-        // Simulating 2 in 10 odds (20% chance of winning)
-        $isWinner = (rand(1, 10) <= 4); // If random number <= 2, it's a win
+        $websettings = Websetting::where('id', 1)->first();
+        $spin_odds = $websettings->spin_odds;
+        $winnumber = (rand(1, 10) <= $spin_odds);
+
+        if ($websettings) {
+            $isWinner = $winnumber; // Adjust the range based on your spinsodds value
+        } else {
+            // Handle the case where websettings are not found
+            $isWinner = false;
+        }
 
         // Set the amount based on the is_winner field
         $amount = $isWinner ? $validatedData['win_amount'] : $validatedData['lose_amount'];
@@ -36,6 +84,7 @@ class spinw extends Controller
             'responseCode' => 200,
             'success' => true,
             'responseMessage' => 'Spin entry created successfully.',
+            'win_number' => $winnumber,
             'spinEntry' => $spinEntry,
         ];
 

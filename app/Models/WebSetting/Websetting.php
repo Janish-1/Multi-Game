@@ -68,6 +68,7 @@ class Websetting extends Model
             "refund_title",
             "refund_slug",
             "refund_desc",
+            "spin_odds",
         ];
 
 

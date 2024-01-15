@@ -51,6 +51,13 @@
         <li class="nav-item"><a class="d-flex align-items-center" href="{{ url('/') }}/admin/leaderboard"><i class="las la-trophy"></i><span class="menu-title text-truncate" data-i18n="Invoice">Leaderboard</span></a>
         </li>
 
+        <li class="nav-item"><a class="d-flex align-items-center" href="{{ url('/') }}/admin/spinwheel"><i class="las la-trophy"></i><span class="menu-title text-truncate" data-i18n="Invoice">Spin Wheel</span></a>
+        </li>
+
+        <li class="nav-item"><a class="d-flex align-items-center" href="{{ url('/') }}/admin/luckyball"><i class="las la-trophy"></i><span class="menu-title text-truncate" data-i18n="Invoice">Lucky Ball</span></a>
+        </li>
+
+
         <li class="nav-item"><a class="d-flex align-items-center" href="javascript:void(0);"><i class="las la-hand-holding-usd"></i><span class="menu-title text-truncate" data-i18n="Email">Withdraw Request</span></a>
             <ul class="menu-content">
                 <li><a class="d-flex align-items-center" href="{{ url('/') }}/admin/new/withdraw/request"><i class="las la-star"></i><span class="menu-item" data-i18n="List">New

@@ -3,12 +3,14 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Faq\FaqController;
+use App\Http\Controllers\matkagame;
 use App\Http\Controllers\Player\PlayerController;
 use App\Http\Controllers\SpecialOffer\SpecialofferController;
 use App\Http\Controllers\Shopcoin\ShopcoinController;
 use App\Http\Controllers\Bidvalue\BidConteoller;
 use App\Http\Controllers\Kyc\KycController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\spinw;
 use App\Http\Controllers\Websettings\WebSettingController;
 use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\Tournament\TournamentController;
@@ -50,9 +52,13 @@ Route::group(['middleware' => 'admin_auth'], function () {
             return view('admin.login.AdminLogin');
         });
 
-        Route::get('/ads', [AdsController::class,'index']);
+        Route::get('/ads', [AdsController::class, 'index']);
         Route::post('/ads/updateimage/a', [AdsController::class, 'UpdateAda'])->name('update.Ad.imagea');
         Route::post('/ads/updateimage/b', [AdsController::class, 'UpdateAdb'])->name('update.Ad.imageb');
+
+        Route::get('/spinwheel', [spinw::class, 'spinWheelIndex'])->name('admin.spinwheel');
+        Route::get('/luckyball', [matkagame::class, 'luckyBallIndex'])->name('admin.luckyball');
+        Route::post('/newbid',[spinw::class, 'setodds'])->name('set.spin.odds');
 
         //admin coding
         Route::get('/dashboard', [HomeController::class, 'Index']);
@@ -259,8 +265,8 @@ Route::post('/contact/now', [FrontController::class, 'ContactNow'])->name('creat
 //Route::post('/submit/coin/request/now', [FrontController::class, 'AddCoinRequest'])->name('submit.coin.request.new');
 
 //now front routing
-Route::get('/cashfree/payment',[CashfreeController::class,'Cashfree']);
-Route::post('/cashfree/payment/success',[CashfreeController::class,'PaymentSuccess']);
+Route::get('/cashfree/payment', [CashfreeController::class, 'Cashfree']);
+Route::post('/cashfree/payment/success', [CashfreeController::class, 'PaymentSuccess']);
 
 Route::get('payment/success', function () {
     return view("admin.Razorpay.PaymentSuccess");
@@ -271,6 +277,6 @@ Route::get('payment/failed', function () {
 });
 
 
-Route::post('/paymentsuccess',[complete::class,'completePay']);
+Route::post('/paymentsuccess', [complete::class, 'completePay']);
 
-Route::post('/testpayment',[initiate::class,'createpaymentreq']);
+Route::post('/testpayment', [initiate::class, 'createpaymentreq']);

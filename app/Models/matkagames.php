@@ -9,15 +9,7 @@ class matkagames extends Model
 {
     protected $fillable=[
         'mid',
-        'mname',
-        'mopened',
-        'mclosed',
         'mstatus',
-        'mballs',
-        'mlocktime',
-        'mstarttime',
-        'mamount',
-        'menteramount',
         'mwinball',
     ];
 

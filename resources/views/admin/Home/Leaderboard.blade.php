@@ -22,7 +22,7 @@
                     <th>Rank</th>
                     <th>Player ID</th>
                     <th>Player Name</th>
-                    <th>Ludo 4 Player</th>
+                    <th>Ludo Wins</th>
                     <th>Fruit Score</th>
                     <th>Fruit Win</th>
                     <th>Fruit Lose</th>

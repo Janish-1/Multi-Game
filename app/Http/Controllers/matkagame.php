@@ -10,29 +10,22 @@ use Illuminate\Support\Facades\DB;
 
 class matkagame extends Controller
 {
+    public function luckyBallIndex()
+    {
+        // Your logic for the Lucky Ball page goes here
+        return view('admin.luckyball'); // Replace 'admin.luckyball' with the actual view name
+    }
+
     public function createMatkaGame(Request $request)
     {
-        $mname = $request->input('mname');
-        $mstatus = "Active";
-        $mlocktime = $request->input('mlocktime');
-        $mstarttime = $request->input('mstarttime');
-        $mballs = $request->input('mballs');
-        $mamount = $request->input('mamount');
-        $menteramount = $request->input('menteramount');
+        $mstatus = "open";
 
         // Generate a random 6-digit number for 'mid'
         $mid = mt_rand(100000, 999999);
 
         $matkaGame = MatkaGames::create([
             'mid' => $mid,
-            'mname' => $mname,
             'mstatus' => $mstatus,
-            'mclosed' => $mballs,
-            'mlocktime' => $mlocktime,
-            'mstarttime' => $mstarttime,
-            'mballs' => $mballs,
-            'mamount' => $mamount,
-            'menteramount' => $menteramount,
         ]);
 
         if ($matkaGame) {
@@ -357,6 +350,7 @@ class matkagame extends Controller
     {
         $gameId = $request->input('game_id');
         $playerId = $request->input('player_id');
+        $menteramount = $request->input('bid_amount');
         $pickedBall = $request->input('picked_ball');
 
         $matkaGame = MatkaGames::where('mid', $gameId)->first();
@@ -365,7 +359,7 @@ class matkagame extends Controller
             return $this->gameNotFoundResponse();
         }
 
-        if ($matkaGame->mstatus === 'Active') {
+        if ($matkaGame->mstatus === 'open') {
             $isWinner = ($pickedBall == $matkaGame->mwinball);
 
             $userData = Userdata::where('playerid', $playerId)->first();
@@ -374,7 +368,7 @@ class matkagame extends Controller
                 return $this->insufficientCoinsResponse();
             }
 
-            $userData->totalcoin -= $matkaGame->menteramount;
+            $userData->totalcoin -= $menteramount;
             $userData->save();
             $winamount = $matkaGame['mamount'];
 
@@ -383,12 +377,9 @@ class matkagame extends Controller
                 'mpick' => $pickedBall, // Replace this with the appropriate value
                 'mvalue' => $winamount,
                 'mplayer' => $playerId,
+                'mbid' => $menteramount,
                 'winner' => $isWinner,
             ]);
-
-            $matkaGame->increment('mopened');
-            $matkaGame->decrement('mclosed');
-            $matkaGame->save();
 
             return response()->json([
                 'responseCode' => 200,
@@ -426,17 +417,18 @@ class matkagame extends Controller
     }
     public function payoutNumbers(Request $request)
     {
-        $gameId = $request->input('game_id');
-        $winningNumber = $request->input('winning_number');
-
-        $matkaGame = MatkaGames::where('mid', $gameId)->first();
+        $matkaGame = MatkaGames::where('mstatus', 'lock')->first();
+        $gameId = $matkaGame->mid;
 
         if (!$matkaGame) {
             return $this->gameNotFoundResponse();
         }
 
+        $matkaGame->update([
+            'mstatus' => 'closed',
+        ]);
+
         $winningEntries = MatkaNumbers::where('mid', $gameId)
-            ->where('mpick', $winningNumber)
             ->where('winner', true)
             ->get();
 
@@ -462,22 +454,20 @@ class matkagame extends Controller
 
     public function makeGameInactive(Request $request)
     {
-        $gameId = $request->input('game_id');
-
-        $matkaGame = MatkaGames::where('mid', $gameId)->first();
+        $matkaGame = MatkaGames::where('mstatus', 'open')->first();
 
         if (!$matkaGame) {
             return $this->gameNotFoundResponse();
         }
 
         // Make the game inactive
-        $matkaGame->mstatus = "Inactive";
+        $matkaGame->mstatus = "lock";
         $matkaGame->save();
 
         return response()->json([
             'responseCode' => 200,
             'success' => true,
-            'responseMessage' => 'Game set inactive.',
+            'responseMessage' => 'Game set locked.',
         ], 200);
     }
 
@@ -556,5 +546,97 @@ class matkagame extends Controller
                 'responseMessage' => 'User data not found',
             ], 404);
         }
+    }
+    public function setwinner(Request $request)
+    {
+        $mid = $request->input('mid');
+        $mwinball = $request->input('mwinball');
+    
+        // Update matkagames
+        $gameUpdated = matkagames::where('mid', $mid)->update([
+            'mwinball' => $mwinball
+        ]);
+    
+        // Update matkanumbers
+        $numbersUpdated = matkanumbers::where('mid', $mid)->update([
+            'mvalue' => ($mwinball) * 8,
+        ]);
+    
+        matkanumbers::where('mid', $mid)
+            ->where('mpick', $mwinball) // Add this condition
+            ->update([
+                'winner' => 1,
+            ]);
+    
+        if ($gameUpdated && $numbersUpdated) {
+            return response()->json([
+                'responseCode' => 200,
+                'success' => true,
+                'responseMessage' => 'Winner set successfully',
+            ], 200);
+        } else {
+            return response()->json([
+                'responseCode' => 500,
+                'success' => false,
+                'responseMessage' => 'Failed to set winner',
+            ], 500);
+        }
+    }
+        public function closegame(Request $request)
+    {
+        $gamefound = matkagames::where('mstatus', 'open')
+            ->orWhere('mstatus', 'lock')
+            ->first();
+
+        if ($gamefound) {
+            $gamefound->update([
+                'mstatus' => 'closed',
+            ]);
+
+            return response()->json([
+                'responseCode' => 200,
+                'success' => true,
+                'responseMessage' => 'Game closed successfully',
+            ], 200);
+        } else {
+            return response()->json([
+                'responseCode' => 404,
+                'success' => false,
+                'responseMessage' => 'No open or locked games found',
+            ], 404);
+        }
+    }
+    public function activeluckynumber(Request $request)
+    {
+        // Find the Matka game by ID
+        $matkaGame = MatkaGames::where('mstatus', 'open')->first(); // Include 'matkaNumbers'
+        $gameId = $matkaGame->mid;
+        $matkaNumbers = matkanumbers::where('mid', $gameId)->get();
+
+        if (!$matkaGame) {
+            $errorResponse = [
+                'responseCode' => 404,
+                'success' => false,
+                'responseMessage' => 'Matka game not found.',
+                'responseData' => null,
+            ];
+
+            return response()->json($errorResponse, 404);
+        }
+
+        $responseData = [
+            'responseCode' => 200,
+            'success' => true,
+            'responseMessage' => 'Matka game found.',
+            'responseData' => [
+                'matkaGame' => $matkaGame, // Return the retrieved Matka game
+                'matkaNumbers' => $matkaNumbers // Return associated MatkaNumbers
+            ],
+        ];
+
+        return response()->json($responseData, 200);
+    }
+    public function statuschecker(Request $request){
+        
     }
 }

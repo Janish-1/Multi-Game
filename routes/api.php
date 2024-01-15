@@ -101,7 +101,6 @@ Route::post('/testpayment',[initiate::class,'createpaymentreq']);
 
 
 // Matka Game
-
 Route::post('/creatematka',[matkagame::class,'createMatkaGame']);
 Route::post('/deleteonematka',[matkagame::class,'deleteMatkaGame']);
 Route::post('/deleteallmakta',[matkagame::class,'deleteAllMatkaGames']);
@@ -116,6 +115,9 @@ Route::post('/makegameinactive',[matkagame::class,'makeGameInactive']);
 Route::post('/gamepicks',[matkagame::class,'gamepicks']);
 Route::post('/matkadecrease',[matkagame::class,'increaseLosses']);
 Route::post('/matkaincrease',[matkagame::class,'increaseWins']);
+Route::post('/setwinamount',[matkagame::class,'setwinner']);
+Route::post('/closegame',[matkagame::class,'closegame']);
+Route::get('/activeluckynum',[matkagame::class,'activeluckynumber']);
 
 // Spin Wheel
 Route::post('/createspin',[spinw::class,'makeSpin']);
@@ -140,6 +142,7 @@ Route::get('/fleaderboard',[fruitgame::class,'get_top_players']);
 Route::post('/increment_fruit_win', [fruitgame::class, 'increment_fruit_win']);
 Route::post('/decrement_fruit_lose', [fruitgame::class, 'decrement_fruit_lose']);
 
+// Cards Games
 Route::post('/incrummywins',[cardsgames::class,'increaseRummyWins']);
 Route::post('/decrummywins',[cardsgames::class,'decreaseRummyWins']);
 Route::post('/inctpwins',[cardsgames::class,'increaseTeenPattiWins']);
