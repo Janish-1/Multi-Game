@@ -151,3 +151,5 @@ Route::post('/inctpwins',[cardsgames::class,'increaseTeenPattiWins']);
 Route::post('/dectpwins',[cardsgames::class,'decreaseTeenPattiWins']);
 
 Route::get('/getstatuscode',[matkagame::class,'statuschecker']);
+Route::post('/addwincoin',[PlayerController::class,'addWinCoin']);
+Route::post('/removewincoin',[PlayerController::class,'removeWinCoin']);

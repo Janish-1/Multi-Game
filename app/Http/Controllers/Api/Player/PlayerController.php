@@ -302,9 +302,9 @@ class PlayerController extends Controller
         $userData->save();
 
         return response()->json([
-            "success"=>true,
-            "OTP"=>$otp
-            ]);    
+            "success" => true,
+            "OTP" => $otp
+        ]);
     }
 
     // Function to generate a unique six-digit OTP
@@ -662,14 +662,14 @@ class PlayerController extends Controller
     public function approveWithdraw(Request $request)
     {
         $transaction_id = $request->input('transaction_id');
-    
+
         try {
             // Find the withdrawal entry by transaction ID
             $withdraw = Withdraw::where('transaction_id', $transaction_id)->firstOrFail();
-    
+
             // Update withdrawstatus to '1' for approval
             $withdraw->update(['status' => '1']);
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Withdrawal approved successfully',
@@ -683,18 +683,18 @@ class PlayerController extends Controller
             ], 500);
         }
     }
-    
+
     public function rejectWithdraw(Request $request)
     {
         $transaction_id = $request->input('transaction_id');
-    
+
         try {
             // Find the withdrawal entry by transaction ID
             $withdraw = Withdraw::where('transaction_id', $transaction_id)->firstOrFail();
-    
+
             // Update withdrawstatus to '0' for rejection
             $withdraw->update(['status' => '2']);
-    
+
             return response()->json([
                 'success' => true,
                 'message' => 'Withdrawal rejected successfully',
@@ -706,6 +706,102 @@ class PlayerController extends Controller
                 'message' => 'Failed to reject withdrawal',
                 'error' => $e->getMessage(),
             ], 500);
+        }
+    }
+    public function addWinCoin(Request $request)
+    {
+        try {
+            $playerid = $request->input('playerid');
+            $wincoin = $request->input('win_coin');
+    
+            // Get the existing player data
+            $playerData = Userdata::where('playerid', $playerid)->first();
+    
+            if (!$playerData) {
+                // If the player does not exist, handle accordingly
+                $responseData = [
+                    'status' => 'error',
+                    'message' => 'Player not found.',
+                ];
+    
+                return response()->json($responseData, 404);
+            }
+    
+            // Add coins to the existing player
+            $newWinCoin = $playerData->wincoin + $wincoin;
+    
+            // Update the existing player record
+            $playerData->update([
+                'wincoin' => $newWinCoin,
+                // Update other fields if needed
+            ]);
+    
+            // If the update is successful
+            $responseData = [
+                'status' => 'success',
+                'message' => 'Win coins added to the existing player successfully.',
+                'playerid' => $playerid,
+                'new_wincoin' => $newWinCoin,
+            ];
+    
+            return response()->json($responseData, 200);
+        } catch (\Exception $e) {
+            // If an error occurs
+            $responseData = [
+                'status' => 'error',
+                'message' => 'Failed to add win coins to the existing player.',
+                'error' => $e->getMessage(),
+            ];
+    
+            return response()->json($responseData, 500);
+        }
+    }
+    public function removeWinCoin(Request $request)
+    {
+        try {
+            $playerid = $request->input('playerid');
+            $wincoin = $request->input('win_coin');
+    
+            // Get the existing player data
+            $playerData = Userdata::where('playerid', $playerid)->first();
+    
+            if (!$playerData) {
+                // If the player does not exist, handle accordingly
+                $responseData = [
+                    'status' => 'error',
+                    'message' => 'Player not found.',
+                ];
+    
+                return response()->json($responseData, 404);
+            }
+    
+            // Add coins to the existing player
+            $newWinCoin = $playerData->wincoin - $wincoin;
+    
+            // Update the existing player record
+            $playerData->update([
+                'wincoin' => $newWinCoin,
+                // Update other fields if needed
+            ]);
+    
+            // If the update is successful
+            $responseData = [
+                'status' => 'success',
+                'message' => 'Win coins added to the existing player successfully.',
+                'playerid' => $playerid,
+                'new_wincoin' => $newWinCoin,
+            ];
+    
+            return response()->json($responseData, 200);
+        } catch (\Exception $e) {
+            // If an error occurs
+            $responseData = [
+                'status' => 'error',
+                'message' => 'Failed to add win coins to the existing player.',
+                'error' => $e->getMessage(),
+            ];
+    
+            return response()->json($responseData, 500);
         }
     }
 }
