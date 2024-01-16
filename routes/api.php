@@ -129,6 +129,8 @@ Route::post('/decresespins',[spinw::class,'decreaseSpins']);
 Route::post('/dailyincspins',[spinw::class,'increaseAllSpins'])->name('daily.spin.increase');
 Route::post('/spinwinincrease',[spinw::class,'increaseSpinWins']);
 Route::post('/spinwindecrease',[spinw::class,'increaseSpinLoss']);
+Route::post('/setwinnerspin',[spinw::class,'setwinner']);
+Route::post('/setwinning',[spinw::class,'setwinningnum']);
 
 // Fruit Cutter
 Route::post('/fcreategame',[fruitgame::class,'start_game']);

@@ -13,6 +13,7 @@ class spinwheel extends Model
         'amount',
         'win_amount',
         'lose_amount',
+        'pick',
     ];
 
     use HasFactory;

@@ -53,44 +53,143 @@ class spinw extends Controller
     {
         $validatedData = $request->validate([
             'player_id' => 'required',
-            'win_amount' => 'required|numeric',
-            'lose_amount' => 'required|numeric',
         ]);
 
-        $websettings = Websetting::where('id', 1)->first();
-        $spin_odds = $websettings->spin_odds;
-        $winnumber = (rand(1, 10) <= $spin_odds);
-
-        if ($websettings) {
-            $isWinner = $winnumber; // Adjust the range based on your spinsodds value
-        } else {
-            // Handle the case where websettings are not found
-            $isWinner = false;
-        }
-
-        // Set the amount based on the is_winner field
-        $amount = $isWinner ? $validatedData['win_amount'] : $validatedData['lose_amount'];
+        $randomnum = rand(1, 10);
 
         // Create spin entry in the Spinwheel model with the determined amount and is_winner field
         $spinEntry = Spinwheel::create([
             'player_id' => $validatedData['player_id'],
-            'win_amount' => $validatedData['win_amount'],
-            'lose_amount' => $validatedData['lose_amount'],
-            'is_winner' => $isWinner,
-            'amount' => $amount,
+            'pick' => $randomnum,
         ]);
 
         $responseData = [
             'responseCode' => 200,
             'success' => true,
             'responseMessage' => 'Spin entry created successfully.',
-            'win_number' => $winnumber,
+            'win_number' => $randomnum,
             'spinEntry' => $spinEntry,
         ];
 
         return response()->json($responseData, 200);
     }
 
+    public function setwinner(Request $request)
+    {
+        $validatedData = $request->validate([
+            'win_amount' => 'required|numeric',
+            'lose_amount' => 'required|numeric',
+        ]);
+
+        $win_amount = $validatedData['win_amount'];
+        $lose_amount = $validatedData['lose_amount'];
+
+        $websettings = Websetting::where('id', 1)->first();
+        $spin_odds = $websettings->spin_odds;
+
+        // Fetch entries before the changes
+        $spinEntriesBefore = Spinwheel::whereNull('is_winner')->get();
+
+        $updatedEntries = 0;
+
+        foreach ($spinEntriesBefore as $spinEntry) {
+            $randomnum = $spinEntry->pick;
+
+            $winnumber = ($randomnum <= $spin_odds);
+
+            if ($websettings) {
+                $isWinner = $winnumber; // Adjust the range based on your spinsodds value
+            } else {
+                // Handle the case where websettings are not found
+                $isWinner = false;
+            }
+
+            // Set the amount based on the is_winner field
+            $amount = $isWinner ? $win_amount : $lose_amount;
+            $id = $spinEntry->ID;
+            // Update the entry
+            Spinwheel::where('ID', $id)
+                ->update([
+                    'win_amount' => $win_amount,
+                    'lose_amount' => $lose_amount,
+                    'is_winner' => $isWinner,
+                    'amount' => $amount,
+                ]);
+
+            $updatedEntries++;
+        }
+
+        // Fetch entries after the changes
+        $spinEntriesAfter = Spinwheel::whereIn('ID', $spinEntriesBefore->pluck('ID'))->get();
+
+        $responseData = [
+            'responseCode' => 200,
+            'success' => true,
+            'responseMessage' => 'Spin entries updated successfully.',
+            'updatedEntries' => $updatedEntries,
+            'entriesBefore' => $spinEntriesBefore,
+            'entriesAfter' => $spinEntriesAfter,
+        ];
+
+        return response()->json($responseData, $responseData['responseCode']);
+    }
+
+    public function setwinningnum(Request $request)
+    {
+        $validatedData = $request->validate([
+            'win_amount' => 'required|numeric',
+            'lose_amount' => 'required|numeric',
+            'winningnum' => 'required|numeric',
+        ]);
+
+        $win_amount = $validatedData['win_amount'];
+        $lose_amount = $validatedData['lose_amount'];
+        $winningnum = $validatedData['winningnum'];
+
+        // Fetch entries before the changes
+        $spinEntriesBefore = Spinwheel::whereNull('is_winner')->get();
+
+        $updatedEntries = 0;
+
+        foreach ($spinEntriesBefore as $spinEntry) {
+            $randomnum = $spinEntry->pick;
+
+            if ($randomnum === $winningnum) {
+                $isWinner = true; // Adjust the range based on your spinsodds value
+            } else {
+                // Handle the case where websettings are not found
+                $isWinner = false;
+            }
+
+            // Set the amount based on the is_winner field
+            $amount = $isWinner ? $win_amount : $lose_amount;
+            $id = $spinEntry->ID;
+            // Update the entry
+            Spinwheel::where('ID', $id)
+                ->update([
+                    'win_amount' => $win_amount,
+                    'lose_amount' => $lose_amount,
+                    'is_winner' => $isWinner,
+                    'amount' => $amount,
+                ]);
+
+            $updatedEntries++;
+        }
+
+        // Fetch entries after the changes
+        $spinEntriesAfter = Spinwheel::whereIn('ID', $spinEntriesBefore->pluck('ID'))->get();
+
+        $responseData = [
+            'responseCode' => 200,
+            'success' => true,
+            'responseMessage' => 'Spin entries updated successfully.',
+            'updatedEntries' => $updatedEntries,
+            'entriesBefore' => $spinEntriesBefore,
+            'entriesAfter' => $spinEntriesAfter,
+        ];
+
+        return response()->json($responseData, $responseData['responseCode']);
+    }
     public function sendReward(Request $request)
     {
         $validatedData = $request->validate([
