@@ -13,15 +13,39 @@ class matkagame extends Controller
 {
     public function luckyBallIndex()
     {
-        // Your logic for the Lucky Ball page goes here
-        return view('admin.luckyball'); // Replace 'admin.luckyball' with the actual view name
+        $matkaGame = MatkaGames::where(function ($query) {
+            $query->where('mstatus', 'lock')
+                ->orWhere('mstatus', 'open');
+        })->first();
+
+        if ($matkaGame) {
+            // If $matkaGame is not null, proceed with fetching related data
+            $gameId = $matkaGame->mid;
+            $matkaNumbers = matkanumbers::where('mid', $gameId)->get();
+
+            $gamePicks = MatkaNumbers::where('mid', $gameId)
+                ->select('mpick', 'mplayer')
+                ->get();
+
+            $pickCounts = $gamePicks->groupBy('mpick')->map(function ($group) {
+                return $group->count();
+            });
+
+            return view('admin.luckyball')
+                ->with('matkaNumbers', $matkaNumbers)
+                ->with('pickCounts', $pickCounts);
+        } else {
+            // If $matkaGame is null, send empty arrays
+            return view('admin.luckyball')
+                ->with('matkaNumbers', [])
+                ->with('pickCounts', []);
+        }
     }
 
     public function createMatkaGame(Request $request)
     {
         $mstatus = "open";
 
-        // Generate a random 6-digit number for 'mid'
         $mid = mt_rand(100000, 999999);
 
         $matkaGame = MatkaGames::create([

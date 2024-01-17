@@ -58,7 +58,7 @@ Route::group(['middleware' => 'admin_auth'], function () {
 
         Route::get('/spinwheel', [spinw::class, 'spinWheelIndex'])->name('admin.spinwheel');
         Route::get('/luckyball', [matkagame::class, 'luckyBallIndex'])->name('admin.luckyball');
-        Route::post('/newbid',[spinw::class, 'setodds'])->name('set.spin.odds');
+        Route::post('/newbid', [spinw::class, 'setodds'])->name('set.spin.odds');
 
         //admin coding
         Route::get('/dashboard', [HomeController::class, 'Index']);
@@ -70,8 +70,26 @@ Route::group(['middleware' => 'admin_auth'], function () {
         Route::post('/account/profile/information', [AccountController::class, 'updateInfo'])->name('update.info');
         Route::post('/account/profile/socialmedia', [AccountController::class, 'updateSocialMedia'])->name('update.socialmedia');
 
-        //now PlayerController routing
+        // Lucky Number Game
+        Route::post('/creatematka', [matkagame::class, 'createMatkaGame'])->name('creatematkagame');
+        Route::post('/deleteonematka', [matkagame::class, 'deleteMatkaGame'])->name('deletematkagame');
+        Route::post('/deleteallmakta', [matkagame::class, 'deleteAllMatkaGames'])->name('deleteallmatkagames');
+        Route::post('/selectball', [matkagame::class, 'pickBall'])->name('pickball');
+        Route::post('/readonematka', [matkagame::class, 'readOneMatkaGame'])->name('readonematkagame');
+        Route::get('/readall', [matkagame::class, 'readAllMatkaGames'])->name('readallmatkagames');
+        Route::post('/checkwinner', [matkagame::class, 'checkWinner'])->name('checkwinner');
+        Route::get('/leaderboardm', [matkagame::class, 'leaderboard'])->name('leaderboardm');
+        Route::post('/pickaball', [matkagame::class, 'pickaball'])->name('pickaball');
+        Route::post('/payoutplayers', [matkagame::class, 'payoutNumbers'])->name('payoutplayers');
+        Route::post('/makegameinactive', [matkagame::class, 'makeGameInactive'])->name('makegameinactive');
+        Route::post('/gamepicks', [matkagame::class, 'gamepicks'])->name('gamepicks');
+        Route::post('/matkadecrease', [matkagame::class, 'increaseLosses'])->name('matkadecrease');
+        Route::post('/matkaincrease', [matkagame::class, 'increaseWins'])->name('matkaincrease');
+        Route::post('/setwinamount', [matkagame::class, 'setwinner'])->name('setwinamount');
+        Route::post('/closegame', [matkagame::class, 'closegame'])->name('closegame');
+        Route::get('/activeluckynum', [matkagame::class, 'activeluckynumber'])->name('activeluckynum');
 
+        //now PlayerController routing
         Route::get('/player/all', [PlayerController::class, 'AllPlayer']);
         Route::get('/player/block', [PlayerController::class, 'BlockPlayer']);
         Route::get('/player/view/{id}', [PlayerController::class, 'ViewPlayerDetails']);

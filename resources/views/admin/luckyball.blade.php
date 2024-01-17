@@ -3,14 +3,24 @@
 Lucky Number
 @endsection
 @section('css')
-<!--  link custom css link here -->
+<style>
+  .scrollable-table {
+    max-height: 300px;
+    /* Set the max height as per your requirement */
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    /* Add a border for clarity */
+  }
+</style>
 @endsection
 @section('content')
 <!-- BEGIN: Content-->
 <!-- Buttons in the Middle -->
 <div class="d-flex justify-content-center mt-3">
-  <button class="btn btn-info mr-2">Start Game</button>
-  <button class="btn btn-warning">Stop Game</button>
+  <button id="startgamebutton" class="btn btn-info mr-2">Start Game</button>
+  <button id="stopgamebutton" class="btn btn-warning mr-2">Stop Game</button>
+  <button id="lockgamebutton" class="btn btn-danger mr-2">Lock Game</button>
+  <button id="payoutplayers" class="btn btn-info mr-2">Payout Players</button>
 </div>
 <br>
 <div class="row justify-content-center">
@@ -20,17 +30,71 @@ Lucky Number
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Date</th>
-          <th scope="col">Pick</th>
-          <th scope="col">Start Time</th>
-          <th scope="col">Lock Time</th>
-          <!-- Add more columns as needed -->
+          <th scope="col">Game ID</th>
+          <th scope="col">Player Pick</th>
+          <th scope="col">Ball Value</th>
+          <th scope="col">Player ID</th>
+          <th scope="col">Bid Amount</th>
+          <th scope="col">Winner</th>
         </tr>
       </thead>
+      @if($matkaNumbers && count($matkaNumbers) > 0)
+      <tbody id="activeLuckyNumTable">
+        @foreach($matkaNumbers as $row)
+        <tr>
+          <td>{{ $row->ID }}</td>
+          <td>{{ $row->mid }}</td>
+          <td>{{ $row->mpick }}</td>
+          <td>{{ $row->mvalue }}</td>
+          <td>{{ $row->mplayer }}</td>
+          <td>{{ $row->mbid }}</td>
+          <td>{{ $row->winner }}</td>
+        </tr>
+        @endforeach
+      </tbody>
+      @else
       <tbody>
-        <!-- Add your data rows here -->
+        <tr>
+          <td colspan="7">No Data Available for player picks.</td>
+        </tr>
+      </tbody>
+      @endif
+    </table>
+  </div>
+
+  <div class="col-md-5 col-12">
+    @if($pickCounts && count($pickCounts) > 0)
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Player Pick</th>
+          <th scope="col">Count</th>
+        </tr>
+      </thead>
+      <tbody id="secondTable">
+        @foreach($pickCounts as $pick => $count)
+        <tr>
+          <td>{{ $pick }}</td>
+          <td>{{ $count }}</td>
+        </tr>
+        @endforeach
       </tbody>
     </table>
+    @else
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Player Pick</th>
+          <th scope="col">Count</th>
+        </tr>
+      </thead>
+      <tbody id="secondTable">
+        <tr>
+          <td colspan="2">No data available for player picks.</td>
+        </tr>
+      </tbody>
+    </table>
+    @endif
   </div>
 
   <div class="col-12 mt-3">
@@ -38,17 +102,17 @@ Lucky Number
     <form>
       <!-- Input Fields -->
       <div class="form-group">
-        <label for="inputField1">Set Reward Ball</label>
+        <label for="inputField1">Game ID</label>
         <input type="text" class="form-control" id="inputField1">
       </div>
 
       <div class="form-group">
-        <label for="inputField2">Set Reward Amount</label>
+        <label for="inputField2">Set Win Ball</label>
         <input type="text" class="form-control" id="inputField2">
       </div>
 
       <!-- Submit Button -->
-      <button type="submit" class="btn btn-primary mt-3">Submit</button>
+      <button id="setwinball" type="submit" class="btn btn-primary mt-3">Submit</button>
     </form>
   </div>
 </div>
@@ -56,7 +120,86 @@ Lucky Number
 @endsection
 
 @section('js')
-<!-- link custom js link here -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="{{ URL::asset('admin-assets/css/custom/js/luckyspin/luckyspin.js') }}"></script>
-<!-- Add your custom JavaScript for toggle, automation, locking game, and payouts -->
+<script>
+  $(document).ready(function() {
+    // Attaching a click event handler for the Start Game button
+    $('#startgamebutton').on("click", function() {
+      $.ajax({
+        url: "http://localhost:8000/api/creatematka",
+        method: "POST",
+        success: function(response) {
+          console.log("API call successful", response);
+        },
+        error: function(error) {
+          console.error("API call failed", error);
+        }
+      });
+    });
+
+    // Attaching a click event handler for the Stop Game button
+    $('#stopgamebutton').on("click", function() {
+      $.ajax({
+        url: "http://localhost:8000/api/closegame",
+        method: "POST",
+        success: function(response) {
+          console.log("API call successful", response);
+        },
+        error: function(error) {
+          console.error("API call failed", error);
+        }
+      });
+    });
+
+    $('#setwinball').on("click", function() {
+      // Get the values from the input fields
+      var gameId = $('#inputField1').val();
+      var setWinBall = $('#inputField2').val();
+
+      // Prepare the data to be sent
+      var requestData = {
+        mid: gameId,
+        mwinball: setWinBall
+      };
+      $.ajax({
+        url: "http://localhost:8000/api/setwinamount",
+        method: "POST",
+        data: requestData, // Include the data here
+        success: function(response) {
+          console.log("API call successful", response);
+        },
+        error: function(error) {
+          console.error("API call failed", error);
+        }
+      });
+    });
+
+    $('#payoutplayers').on("click", function() {
+      $.ajax({
+        url: "http://localhost:8000/api/payoutplayers",
+        method: "POST",
+        success: function(response) {
+          console.log("API call successful", response);
+        },
+        error: function(error) {
+          console.error("API call failed", error);
+        }
+      });
+    });
+
+    $('#lockgamebutton').on("click",function (){
+      $.ajax({
+        url: "http://localhost:8000/api/makegameinactive",
+        method: "POST",
+        success: function(response) {
+          console.log("API call successful", response);
+        },
+        error: function(error) {
+          console.log("API call failed", error);
+        }
+      });
+    });
+  });
+</script>
 @endsection
