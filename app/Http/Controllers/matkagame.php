@@ -751,6 +751,13 @@ class matkagame extends Controller
                     ->update([
                         'lucky_num_status' => 1
                     ]);
+    
+                return response()->json([
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'Game 1 locked successfully',
+                    'data' => $game1 // You can include additional data if needed
+                ], 200);
             }
         }
     
@@ -796,7 +803,21 @@ class matkagame extends Controller
                     ->update([
                         'lucky_num_status' => 3
                     ]);
+    
+                return response()->json([
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'Game 2 closed and processed successfully',
+                    'data' => $game2 // You can include additional data if needed
+                ], 200);
             }
         }
-    }    
+    
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'message' => 'No specific actions taken',
+            'data' => null // You can include additional data if needed
+        ], 200);
+    }
 }
