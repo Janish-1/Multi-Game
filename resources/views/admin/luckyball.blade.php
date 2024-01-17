@@ -31,6 +31,41 @@ Lucky Number
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Game ID</th>
+          <th scope="col">Game Status</th>
+          <th scope="col">Win Number</th>
+          <th scope="col">Created At</th>
+          <th scope="col">Updated At</th>
+        </tr>
+      </thead>
+      @if($matkaGame)
+      <tbody id="activeLuckyNumTable">
+        <tr>
+          <td>{{ $matkaGame->id }}</td>
+          <td>{{ $matkaGame->mid }}</td>
+          <td>{{ $matkaGame->mstatus }}</td>
+          <td>{{ $matkaGame->mwinball }}</td>
+          <td>{{ $matkaGame->created_at }}</td>
+          <td>{{ $matkaGame->updated_at }}</td>
+        </tr>
+      </tbody>
+      @else
+      <tbody>
+        <tr>
+          <td colspan="7">No Data Available for Active Games.</td>
+        </tr>
+      </tbody>
+      @endif
+    </table>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <!-- Table in the Middle -->
+  <div class="col-md-7 col-12">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Game ID</th>
           <th scope="col">Player Pick</th>
           <th scope="col">Ball Value</th>
           <th scope="col">Player ID</th>
@@ -127,10 +162,11 @@ Lucky Number
     // Attaching a click event handler for the Start Game button
     $('#startgamebutton').on("click", function() {
       $.ajax({
-        url: "http://localhost:8000/api/creatematka",
+        url: "http://multigame.pujanpaath.com/api/creatematka",
         method: "POST",
         success: function(response) {
           console.log("API call successful", response);
+          location.reload();
         },
         error: function(error) {
           console.error("API call failed", error);
@@ -141,10 +177,11 @@ Lucky Number
     // Attaching a click event handler for the Stop Game button
     $('#stopgamebutton').on("click", function() {
       $.ajax({
-        url: "http://localhost:8000/api/closegame",
+        url: "http://multigame.pujanpaath.com/api/closegame",
         method: "POST",
         success: function(response) {
           console.log("API call successful", response);
+          location.reload();
         },
         error: function(error) {
           console.error("API call failed", error);
@@ -163,11 +200,12 @@ Lucky Number
         mwinball: setWinBall
       };
       $.ajax({
-        url: "http://localhost:8000/api/setwinamount",
+        url: "http://multigame.pujanpaath.com/api/setwinamount",
         method: "POST",
         data: requestData, // Include the data here
         success: function(response) {
           console.log("API call successful", response);
+          location.reload();
         },
         error: function(error) {
           console.error("API call failed", error);
@@ -177,10 +215,11 @@ Lucky Number
 
     $('#payoutplayers').on("click", function() {
       $.ajax({
-        url: "http://localhost:8000/api/payoutplayers",
+        url: "http://multigame.pujanpaath.com/api/payoutplayers",
         method: "POST",
         success: function(response) {
           console.log("API call successful", response);
+          location.reload();
         },
         error: function(error) {
           console.error("API call failed", error);
@@ -190,10 +229,11 @@ Lucky Number
 
     $('#lockgamebutton').on("click",function (){
       $.ajax({
-        url: "http://localhost:8000/api/makegameinactive",
+        url: "http://multigame.pujanpaath.com/api/makegameinactive",
         method: "POST",
         success: function(response) {
           console.log("API call successful", response);
+          location.reload();
         },
         error: function(error) {
           console.log("API call failed", error);
