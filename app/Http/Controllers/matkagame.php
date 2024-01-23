@@ -464,25 +464,25 @@ class matkagame extends Controller
             ->where('winner', true)
             ->get();
 
-            foreach ($winningEntries as $entry) {
-                if ($entry->mvalue === null) {
-                    // If mvalue is null, perform a random pick from the numbers in mpick
-                    $mpickArray = explode(',', $entry->mpick);
-                    $randomNumber = $mpickArray[array_rand($mpickArray)];
+        foreach ($winningEntries as $entry) {
+            if ($entry->mvalue === null) {
+                // If mvalue is null, perform a random pick from the numbers in mpick
+                $mpickArray = explode(',', $entry->mpick);
+                $randomNumber = $mpickArray[array_rand($mpickArray)];
 
-                    $entry->update([
-                        'mvalue' => $randomNumber,
-                    ]);
-                }
-
-                $userData = Userdata::where('playerid', $entry->mplayer)->first();
-
-                if ($userData) {
-                    $userData->totalcoin += $entry->mvalue;
-                    $userData->wincoin += $entry->mvalue;
-                    $userData->save();
-                }
+                $entry->update([
+                    'mvalue' => $randomNumber,
+                ]);
             }
+
+            $userData = Userdata::where('playerid', $entry->mplayer)->first();
+
+            if ($userData) {
+                $userData->totalcoin += $entry->mvalue;
+                $userData->wincoin += $entry->mvalue;
+                $userData->save();
+            }
+        }
         $matkaGame->save();
 
         Websetting::where('id', 1)
@@ -691,6 +691,82 @@ class matkagame extends Controller
     }
     public function statuschecker(Request $request)
     {
+        $game1 = matkagames::where('mstatus', 'open')->first();
+        $game2 = matkagames::where('mstatus', 'lock')->first();
+
+        if ($game1) {
+            $time_started = $game1->created_at;
+            $created_at = Carbon::parse($time_started);
+            $hoursPassed = now()->diffInHours($created_at);
+
+            if ($hoursPassed >= 4) {
+                $game1->mstatus = 'lock';
+                Websetting::where('id', 1)
+                    ->update([
+                        'lucky_num_status' => 1
+                    ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'Game 1 locked successfully',
+                    'data' => $game1 // You can include additional data if needed
+                ], 200);
+            }
+        }
+
+        if ($game2) {
+            $time_started = $game2->created_at;
+            $created_at = Carbon::parse($time_started);
+            $minutesPassed = now()->diffInMinutes($created_at);
+
+            if ($minutesPassed >= 270) {
+                $gameId = $game2->mid;
+
+                $game2->update([
+                    'mstatus' => 'closed',
+                ]);
+
+                $winningEntries = MatkaNumbers::where('mid', $gameId)
+                    ->where('winner', true)
+                    ->get();
+
+                foreach ($winningEntries as $entry) {
+                    if ($entry->mvalue === null) {
+                        // If mvalue is null, perform a random pick from the numbers in mpick
+                        $mpickArray = explode(',', $entry->mpick);
+                        $randomNumber = $mpickArray[array_rand($mpickArray)];
+
+                        $entry->update([
+                            'mvalue' => $randomNumber,
+                        ]);
+                    }
+
+                    $userData = Userdata::where('playerid', $entry->mplayer)->first();
+
+                    if ($userData) {
+                        $userData->totalcoin += $entry->mvalue;
+                        $userData->wincoin += $entry->mvalue;
+                        $userData->save();
+                    }
+                }
+
+                $game2->save();
+
+                Websetting::where('id', 1)
+                    ->update([
+                        'lucky_num_status' => 3
+                    ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'code' => 200,
+                    'message' => 'Game 2 closed and processed successfully',
+                    'data' => $game2 // You can include additional data if needed
+                ], 200);
+            }
+        }
+
         $getsettings = Websetting::where('id', 1)->first();
         $getstatuscode = $getsettings->lucky_num_status;
 
@@ -714,7 +790,7 @@ class matkagame extends Controller
         if ($getstatuscode === 1) {
             $message = "Game Locked";
         }
-    
+
         if ($getstatuscode === 2) {
             $message = "Game Closed/Error";
         }
@@ -739,19 +815,19 @@ class matkagame extends Controller
     {
         $game1 = matkagames::where('mstatus', 'open')->first();
         $game2 = matkagames::where('mstatus', 'lock')->first();
-    
+
         if ($game1) {
             $time_started = $game1->created_at;
             $created_at = Carbon::parse($time_started);
             $hoursPassed = now()->diffInHours($created_at);
-    
+
             if ($hoursPassed >= 4) {
                 $game1->mstatus = 'lock';
                 Websetting::where('id', 1)
                     ->update([
                         'lucky_num_status' => 1
                     ]);
-    
+
                 return response()->json([
                     'status' => 'success',
                     'code' => 200,
@@ -760,50 +836,50 @@ class matkagame extends Controller
                 ], 200);
             }
         }
-    
+
         if ($game2) {
             $time_started = $game2->created_at;
             $created_at = Carbon::parse($time_started);
             $minutesPassed = now()->diffInMinutes($created_at);
-    
+
             if ($minutesPassed >= 270) {
                 $gameId = $game2->mid;
-    
+
                 $game2->update([
                     'mstatus' => 'closed',
                 ]);
-    
+
                 $winningEntries = MatkaNumbers::where('mid', $gameId)
                     ->where('winner', true)
                     ->get();
-    
+
                 foreach ($winningEntries as $entry) {
                     if ($entry->mvalue === null) {
                         // If mvalue is null, perform a random pick from the numbers in mpick
                         $mpickArray = explode(',', $entry->mpick);
                         $randomNumber = $mpickArray[array_rand($mpickArray)];
-    
+
                         $entry->update([
                             'mvalue' => $randomNumber,
                         ]);
                     }
-    
+
                     $userData = Userdata::where('playerid', $entry->mplayer)->first();
-    
+
                     if ($userData) {
                         $userData->totalcoin += $entry->mvalue;
                         $userData->wincoin += $entry->mvalue;
                         $userData->save();
                     }
                 }
-    
+
                 $game2->save();
-    
+
                 Websetting::where('id', 1)
                     ->update([
                         'lucky_num_status' => 3
                     ]);
-    
+
                 return response()->json([
                     'status' => 'success',
                     'code' => 200,
@@ -812,7 +888,7 @@ class matkagame extends Controller
                 ], 200);
             }
         }
-    
+
         return response()->json([
             'status' => 'success',
             'code' => 200,
