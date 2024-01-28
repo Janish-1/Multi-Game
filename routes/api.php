@@ -99,7 +99,6 @@ Route::post('/razorpay/payment/complete',[RazorpayController::class,'Complete'])
 Route::post('/paymentsuccess',[complete::class,'completePay']);
 Route::post('/testpayment',[initiate::class,'createpaymentreq']);
 
-
 // Matka Game
 Route::post('/creatematka',[matkagame::class,'createMatkaGame']);
 Route::post('/deleteonematka',[matkagame::class,'deleteMatkaGame']);

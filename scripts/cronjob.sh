@@ -1,0 +1,1 @@
+curl https://multigame.pujanpaath.com/api/getstatuscode
