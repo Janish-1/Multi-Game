@@ -396,7 +396,7 @@ class matkagame extends Controller
 
             $userData = Userdata::where('playerid', $playerId)->first();
 
-            if (!$userData || $userData->totalcoin < $matkaGame->menteramount) {
+            if (!$userData || $userData->totalcoin < $menteramount) {
                 return $this->insufficientCoinsResponse();
             }
 
