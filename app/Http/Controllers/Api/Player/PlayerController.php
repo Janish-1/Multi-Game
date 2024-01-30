@@ -223,84 +223,80 @@ class PlayerController extends Controller
 
     public function MobileRegister(Request $request)
     {
+        // Fetch game configuration
         $gameConfig = Websetting::first();
+    
+        // Generate random number for refer code and player ID
         $randomNumber = random_int(100000, 999999);
         $playerid = random_int(100000, 999999);
-
-        $CheckDevice = Userdata::where('device_token', $request->device_token)->first();
-        if ($CheckDevice != "") {
-            $response = ['notice' => 'User Used Diffrent Device'];
+    
+        // Check if the device token is already registered
+        $checkDevice = Userdata::where('device_token', $request->device_token)->first();
+    
+        if ($checkDevice) {
+            $response = ['success' => false, 'message' => 'User Used Different Device'];
             return response($response, 200);
-        } else {
-            if ($request->refer_code != "") {
-                $ReferCode = Userdata::where('refer_code', $request->refer_code)->first();
-                if ($ReferCode != "") {
-                    $refercoin = $ReferCode["refrelCoin"] + $gameConfig["refer_bonus"];
-                    $updatereferuser = Userdata::where('refer_code', $request->refer_code)->update(
-                        array(
-                            "refrelCoin" => $refercoin,
-                        )
-                    );
-
-                    if ($updatereferuser) {
-                        $insert = Userdata::insert([
-                            'playerid' => $playerid,
-                            "username" => $request->playername,
-                            "password" => Hash::make($request->password),
-                            "userphone" => $request->mobilenumber,
-                            "refer_code" => $randomNumber,
-                            "used_refer_code" => $request->refer_code,
-                            "totalcoin" => $gameConfig->signup_bonus,
-                            "wincoin" => "0",
-                            "refrelCoin" => "0",
-                            "registerDate" => date("l jS F Y h:i:s A"),
-                            "device_token" => $request->device_token,
-                            "status" => 1,
-                            "banned" => 1,
-                        ]);
-
-                        if ($insert) {
-                            $response = ['message' => 'User Created Successfully !', 'playerid' => $playerid];
-                            return response($response, 200);
-                        } else {
-                            $response = ['message' => 'Something is wrong'];
-                            return response($response, 200);
-                        }
-                    } else {
-                        $response = ['message' => 'Something is wrong'];
-                        return response($response, 200);
-                    }
-                } else {
-                    $response = ['message' => 'Invalid Refer Code'];
-                    return response($response, 200);
-                }
-            } else {
-                $insert = Userdata::insert([
-                    'playerid' => $playerid,
-                    "username" => $request->playername,
-                    "password" => Hash::make($request->password),
-                    "userphone" => $request->mobilenumber,
-                    "refer_code" => $randomNumber,
-                    "totalcoin" => $gameConfig->signup_bonus,
-                    "wincoin" => "0",
-                    "refrelCoin" => "0",
-                    "registerDate" => date("l jS F Y h:i:s A"),
-                    "device_token" => $request->device_token,
-                    "status" => 1,
-                    "banned" => 1,
-                ]);
-
-                if ($insert) {
-                    $response = ['message' => 'User Created Successfully !', 'playerid' => $playerid];
-                    return response($response, 200);
-                } else {
-                    $response = ['message' => 'Something is wrong'];
-                    return response($response, 200);
-                }
-            }
         }
+    
+        // Check if the mobile number is exactly 10 digits
+        if (strlen($request->mobilenumber) !== 10) {
+            $response = ['success' => false, 'message' => 'Mobile number should be exactly 10 digits'];
+            return response($response, 200);
+        }
+    
+        // Check if the mobile number is already registered
+        $existingUser = Userdata::where('userphone', $request->mobilenumber)->first();
+    
+        if ($existingUser) {
+            $response = ['success' => false, 'message' => 'Mobile number already registered'];
+            return response($response, 200);
+        }
+    
+        // Prepare user data
+        $userData = [
+            'playerid' => $playerid,
+            'username' => $request->playername,
+            'password' => Hash::make($request->password),
+            'userphone' => $request->mobilenumber,
+            'refer_code' => $randomNumber,
+            'totalcoin' => $gameConfig->signup_bonus,
+            'wincoin' => '0',
+            'refrelCoin' => '0',
+            'registerDate' => now(),
+            'device_token' => $request->device_token,
+            'status' => 1,
+            'banned' => 1,
+        ];
+    
+        // Check if a referral code is provided
+        if ($request->refer_code) {
+            $referCodeUser = Userdata::where('refer_code', $request->refer_code)->first();
+    
+            if (!$referCodeUser) {
+                $response = ['success' => false, 'message' => 'Invalid Refer Code'];
+                return response($response, 200);
+            }
+    
+            // Update refrelCoin for the referring user
+            $refercoin = $referCodeUser->refrelCoin + $gameConfig->refer_bonus;
+            $referCodeUser->update(['refrelCoin' => $refercoin]);
+    
+            // Save the used refer code in user data
+            $userData['used_refer_code'] = $request->refer_code;
+        }
+    
+        // Insert the user data into the database
+        $insert = Userdata::insert($userData);
+    
+        if ($insert) {
+            $response = ['success' => true, 'message' => 'User Created Successfully!', 'playerid' => $playerid];
+        } else {
+            $response = ['success' => false, 'message' => 'Something went wrong'];
+        }
+    
+        return response($response, 200);
     }
-
+                
     public function generateOTP(Request $request)
     {
         $otp = $this->generateUniqueOTP(); // Generate a unique six-digit code
