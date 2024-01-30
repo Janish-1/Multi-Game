@@ -67,9 +67,11 @@ class PlayerController extends Controller
                     return response($response, 200);
                 }
             } else {
-                $updatedata = Userdata::where('useremail', $request->email)->update(array(
-                    "device_token" => $request->device_token,
-                ));
+                $updatedata = Userdata::where('useremail', $request->email)->update(
+                    array(
+                        "device_token" => $request->device_token,
+                    )
+                );
                 if ($updatedata) {
                     $response = ['notice' => 'Device ID Update'];
                     return response($response, 200);
@@ -132,7 +134,7 @@ class PlayerController extends Controller
         $shopcoin = Shopcoin::get();
         $gameConfig = Websetting::first();
 
-        $response = ["message" => 'All Details Fetched Successfully', 'playerdata' => $userdata, 'bidvalues' => $bid, 'gameconfig' => $gameConfig, 'shop_coin' => $shopcoin, 'kyc_completed' => $userdata ? (bool)$userdata->kyc_completed : false];
+        $response = ["message" => 'All Details Fetched Successfully', 'playerdata' => $userdata, 'bidvalues' => $bid, 'gameconfig' => $gameConfig, 'shop_coin' => $shopcoin, 'kyc_completed' => $userdata ? (bool) $userdata->kyc_completed : false];
         return response($response, 200);
     }
 
@@ -195,12 +197,18 @@ class PlayerController extends Controller
 
     public function MobileCheck(Request $request)
     {
+        // Validate the incoming request
+        $request->validate([
+            'mobilenumber' => 'required|numeric|digits:10', // Adjust validation rules as needed
+        ]);
+
+        // Check if the mobile number exists in the database
         $checkMobile = Userdata::where('userphone', $request->mobilenumber)->first();
 
         if ($checkMobile) {
             $response = [
                 'message' => 'User Found',
-                'playerid' => $checkMobile['playerid'] ?? null, // Get playerid or set to null if not found
+                'playerid' => $checkMobile->playerid ?? null, // Get playerid or set to null if not found
                 'success' => true // Boolean value indicating success
             ];
             return response($response, 200);
@@ -228,9 +236,11 @@ class PlayerController extends Controller
                 $ReferCode = Userdata::where('refer_code', $request->refer_code)->first();
                 if ($ReferCode != "") {
                     $refercoin = $ReferCode["refrelCoin"] + $gameConfig["refer_bonus"];
-                    $updatereferuser = Userdata::where('refer_code', $request->refer_code)->update(array(
-                        "refrelCoin" => $refercoin,
-                    ));
+                    $updatereferuser = Userdata::where('refer_code', $request->refer_code)->update(
+                        array(
+                            "refrelCoin" => $refercoin,
+                        )
+                    );
 
                     if ($updatereferuser) {
                         $insert = Userdata::insert([
@@ -239,7 +249,7 @@ class PlayerController extends Controller
                             "password" => Hash::make($request->password),
                             "userphone" => $request->mobilenumber,
                             "refer_code" => $randomNumber,
-                            "used_refer_code" =>  $request->refer_code,
+                            "used_refer_code" => $request->refer_code,
                             "totalcoin" => $gameConfig->signup_bonus,
                             "wincoin" => "0",
                             "refrelCoin" => "0",
@@ -713,29 +723,29 @@ class PlayerController extends Controller
         try {
             $playerid = $request->input('playerid');
             $wincoin = $request->input('win_coin');
-    
+
             // Get the existing player data
             $playerData = Userdata::where('playerid', $playerid)->first();
-    
+
             if (!$playerData) {
                 // If the player does not exist, handle accordingly
                 $responseData = [
                     'status' => 'error',
                     'message' => 'Player not found.',
                 ];
-    
+
                 return response()->json($responseData, 404);
             }
-    
+
             // Add coins to the existing player
             $newWinCoin = $playerData->wincoin + $wincoin;
-    
+
             // Update the existing player record
             $playerData->update([
                 'wincoin' => $newWinCoin,
                 // Update other fields if needed
             ]);
-    
+
             // If the update is successful
             $responseData = [
                 'status' => 'success',
@@ -743,7 +753,7 @@ class PlayerController extends Controller
                 'playerid' => $playerid,
                 'new_wincoin' => $newWinCoin,
             ];
-    
+
             return response()->json($responseData, 200);
         } catch (\Exception $e) {
             // If an error occurs
@@ -752,7 +762,7 @@ class PlayerController extends Controller
                 'message' => 'Failed to add win coins to the existing player.',
                 'error' => $e->getMessage(),
             ];
-    
+
             return response()->json($responseData, 500);
         }
     }
@@ -761,29 +771,29 @@ class PlayerController extends Controller
         try {
             $playerid = $request->input('playerid');
             $wincoin = $request->input('win_coin');
-    
+
             // Get the existing player data
             $playerData = Userdata::where('playerid', $playerid)->first();
-    
+
             if (!$playerData) {
                 // If the player does not exist, handle accordingly
                 $responseData = [
                     'status' => 'error',
                     'message' => 'Player not found.',
                 ];
-    
+
                 return response()->json($responseData, 404);
             }
-    
+
             // Add coins to the existing player
             $newWinCoin = $playerData->wincoin - $wincoin;
-    
+
             // Update the existing player record
             $playerData->update([
                 'wincoin' => $newWinCoin,
                 // Update other fields if needed
             ]);
-    
+
             // If the update is successful
             $responseData = [
                 'status' => 'success',
@@ -791,7 +801,7 @@ class PlayerController extends Controller
                 'playerid' => $playerid,
                 'new_wincoin' => $newWinCoin,
             ];
-    
+
             return response()->json($responseData, 200);
         } catch (\Exception $e) {
             // If an error occurs
@@ -800,7 +810,7 @@ class PlayerController extends Controller
                 'message' => 'Failed to add win coins to the existing player.',
                 'error' => $e->getMessage(),
             ];
-    
+
             return response()->json($responseData, 500);
         }
     }
