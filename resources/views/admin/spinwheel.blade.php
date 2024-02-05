@@ -76,4 +76,46 @@ Spin Wheel
 @section('js')
 <!-- link custom js link here -->
 <script src="{{URL::asset('admin-assets/css/custom/js/bidvalue/bidvalue.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+$(document).ready(function () {
+    // Submit form for setting spin odds
+    $('.create_brand').submit(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function (response) {
+                // Handle success response
+                $('#success_msg').html('<b>' + response.success + '</b>');
+            },
+            error: function (error) {
+                // Handle error response
+                $('#notice_msg').html('<b>' + error.responseJSON.message + '</b>');
+            }
+        });
+    });
+
+    // Submit form for adding daily spins
+    $('.general_setting').submit(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function (response) {
+                // Handle success response
+                alert('Daily spins added successfully!');
+            },
+            error: function (error) {
+                // Handle error response
+                alert('Failed to add daily spins. Please try again.');
+            }
+        });
+    });
+});
+</script>
 @endsection

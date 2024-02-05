@@ -46,7 +46,7 @@ class spinw extends Controller
             ];
         }
 
-        return response()->json($response, $websettings ? 200 : 500);
+        return redirect('/admin/spinwheel');
     }
 
     public function makeSpin(Request $request)
@@ -366,7 +366,7 @@ class spinw extends Controller
             'responseData' => []
         ];
 
-        return response()->json($response);
+        return redirect('/admin/spinwheel');
     }
     public function increaseSpinWins(Request $request)
     {
