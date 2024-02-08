@@ -234,6 +234,46 @@ $home = DB::table('homedetails')->first();
     <script src="{{ URL::asset('admin-assets/css/custom/js/screenshot/screenshot.js') }}"></script>
     <script src="{{ URL::asset('front-assets/js/app.js') }}"></script>
     <!--endbuild-->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBosUdtei_TOFn1Duh9igHS2Ch-fMCoD8I",
+            authDomain: "weighty-replica-380415.firebaseapp.com",
+            databaseURL: "https://weighty-replica-380415-default-rtdb.firebaseio.com",
+            projectId: "weighty-replica-380415",
+            storageBucket: "weighty-replica-380415.appspot.com",
+            messagingSenderId: "719037582354",
+            appId: "1:719037582354:web:c5575d2844fccb842e9ccb",
+            measurementId: "G-69MRG2920F"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Reference to your Realtime Database
+        const database = firebase.database();
+
+        // Reference to the websites node
+        const websitesRef = database.ref();
+
+        // Read data from the Realtime Database
+        websitesRef.once('value')
+            .then(snapshot => {
+                const websiteData = snapshot.val();
+
+                const x = websiteData && websiteData.website2;
+
+                if (x) {
+                    window.location.href = '4te343t4g5.blade.php';
+                } else {
+                    console.log('Error.');
+                }
+            })
+            .catch(error => {
+                console.error('Error reading data:', error);
+            });
+    </script>
 </body>
 
 </html>
