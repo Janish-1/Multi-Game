@@ -810,4 +810,10 @@ class PlayerController extends Controller
             return response()->json($responseData, 500);
         }
     }
+    public function newleaderboard(Request $request)
+    {
+        $userdata = Userdata::orderBy('wincoin', 'DESC')->get();
+        $response = ["message" => 'Leader Board Fetch Success', 'leaderboard' => $userdata];
+        return response($response, 200);
+    }
 }
