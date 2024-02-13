@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\cardsgames;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\snakegame;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RestApi\PaymentGateway\Razorpay\RazorpayController;
 use App\Http\Controllers\PaymentGateway\Razorpay\GemRazorpay;
@@ -155,3 +156,7 @@ Route::post('/addwincoin',[PlayerController::class,'addWinCoin']);
 Route::post('/removewincoin',[PlayerController::class,'removeWinCoin']);
 
 Route::get('/newleaderboard',[PlayerController::class,'newleaderboard']);
+
+// Snake Game
+Route::post('/increasesnakewin',[snakegame::class,'increaseSnakeWin']);
+Route::post('/increasesnakeloss',[snakegame::class,'increaseSnakeLoss']);

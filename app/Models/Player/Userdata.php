@@ -50,6 +50,8 @@ class Userdata extends Model
            "matkawins",
            "matkaloss",
            "spinwins",
-           "spinloss",   
+           "spinloss",
+           "snakewin",
+           "snakeloss",   
     ];
 }
