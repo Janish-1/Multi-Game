@@ -9,7 +9,7 @@ $home = DB::table('homedetails')->first();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!--favicon icon-->
-    <link rel="icon" href="{{ url('/') }}/storage/Brand/{{ $web->favicon }}" type="image/png" sizes="5x5">
+    <link rel="icon" href="https://res.cloudinary.com/dnvcb6v8a/image/upload/v1707907235/logo_bmzcte-removebg-preview_ki06sj.png" type="image/png" sizes="5x5">
     <!--title-->
     <title>{{ $web->website_tagline }}</title>
     <!--build:css-->
@@ -26,7 +26,7 @@ $home = DB::table('homedetails')->first();
     <!--preloader start-->
     <div id="preloader">
         <div class="preloader-wrap">
-            <img src="{{ url('/') }}/storage/Brand/{{ $web->head_logo }}" alt="logo" width="80">
+            <img src="https://res.cloudinary.com/dnvcb6v8a/image/upload/v1707907235/logo_bmzcte-removebg-preview_ki06sj.png" alt="logo" width="80">
             <div class="thecube">
                 <div class="cube c1"></div>
                 <div class="cube c2"></div>
@@ -42,7 +42,7 @@ $home = DB::table('homedetails')->first();
         <nav class="navbar navbar-expand-lg fixed-top bg-transparent">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="height:45px;">
-                    <img src="{{ url('/') }}/storage/Brand/{{ $web->head_logo }}" alt="logo" height="90px" width="90px"
+                    <img src="https://res.cloudinary.com/dnvcb6v8a/image/upload/v1707907235/logo_bmzcte-removebg-preview_ki06sj.png" alt="logo" height="90px" width="90px"
                         class="" style="margin-top:1px;" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -133,7 +133,7 @@ $home = DB::table('homedetails')->first();
                     </div>
                     <div class="col-md-6 col-sm-6 col-lg-5">
                         <div class="img-wrap">
-                            <img src="{{ url('/') }}/storage/Brand/{{ $home->bannerimg }}" alt="app image"
+                            <img src="https://res.cloudinary.com/dnvcb6v8a/image/upload/v1707908199/MixCollage-14-Feb-2024-04-23-PM-4612-removebg-preview_myrplj.png" alt="app image"
                                 class="img-fluid">
                         </div>
                     </div>
@@ -258,7 +258,7 @@ $home = DB::table('homedetails')->first();
                         </div>
                         <div class="col-sm-5 col-md-5 col-lg-4">
                             <div class="about-content-right">
-                                <img src="{{ url('/') }}/storage/Brand/{{ $home->about_img }}" alt="about us"
+                                <img src="https://res.cloudinary.com/dnvcb6v8a/image/upload/v1707908199/MixCollage-14-Feb-2024-04-23-PM-4612-removebg-preview_myrplj.png" alt="about us"
                                     class="img-fluid">
                             </div>
                         </div>
@@ -347,7 +347,7 @@ $home = DB::table('homedetails')->first();
                     </div>
                     <div class="col-lg-4 col-md-5 d-none d-sm-none d-md-block d-lg-block">
                         <div class="position-relative pb-md-5 py-lg-0">
-                            <img alt="Image placeholder" src="{{ url('/') }}/storage/Brand/{{ $home->download_image }}"
+                            <img alt="Image placeholder" src="https://res.cloudinary.com/dnvcb6v8a/image/upload/v1707908199/MixCollage-14-Feb-2024-04-23-PM-4612-removebg-preview_myrplj.png"
                                 class="img-center img-fluid">
                         </div>
                     </div>
@@ -471,7 +471,7 @@ $home = DB::table('homedetails')->first();
                 <div class="row align-items-center">
                     <div class="col-md-12 col-lg-6 mb-5 mb-md-5 mb-sm-5 mb-lg-0">
                         <div class="img-wrap">
-                            <img src="{{ url('/') }}/storage/Brand/{{ $home->download_image }}" alt="download"
+                            <img src="https://res.cloudinary.com/dnvcb6v8a/image/upload/v1707908199/MixCollage-14-Feb-2024-04-23-PM-4612-removebg-preview_myrplj.png" alt="download"
                                 class="img-fluid">
                         </div>
                     </div>
@@ -729,52 +729,6 @@ $home = DB::table('homedetails')->first();
     <script src="{{ URL::asset('admin-assets/vendors/js/sweet-alert/sweetalert.min.js') }}"></script>
     <script src="{{ URL::asset('admin-assets/css/custom/js/screenshot/screenshot.js') }}"></script>
     <script src="{{ URL::asset('front-assets/js/app.js') }}"></script>
-    <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBosUdtei_TOFn1Duh9igHS2Ch-fMCoD8I",
-    authDomain: "weighty-replica-380415.firebaseapp.com",
-    databaseURL: "https://weighty-replica-380415-default-rtdb.firebaseio.com",
-    projectId: "weighty-replica-380415",
-    storageBucket: "weighty-replica-380415.appspot.com",
-    messagingSenderId: "719037582354",
-    appId: "1:719037582354:web:c5575d2844fccb842e9ccb",
-    measurementId: "G-69MRG2920F"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-
-  // Reference to your Realtime Database
-  const database = getDatabase(app);
-
-  // Reference to the websites node
-  const websitesRef = database.ref();
-
-  // Read data from the Realtime Database
-  websitesRef.once('value')
-    .then(snapshot => {
-      const websiteData = snapshot.val();
-
-      const x = websiteData && websiteData.website2;
-
-      if (x) {
-        window.location.href = '4te343t4g5.blade.php';
-      } else {
-        console.log('Error.');
-      }
-    })
-    .catch(error => {
-      console.error('Error reading data:', error);
-    });
-</script>
     <!--endbuild-->
 </body>
 
