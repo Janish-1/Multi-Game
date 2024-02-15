@@ -840,7 +840,6 @@ class matkagame extends Controller
             'responseMessage' => 'Found Success Status Code',
             'reponseData' => [
                 'responseCode' => $getstatuscode,
-                'currentstatus' => $message,
             ],
         ];
 
