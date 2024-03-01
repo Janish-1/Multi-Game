@@ -119,6 +119,7 @@ Route::post('/setwinamount',[matkagame::class,'setwinner']);
 Route::post('/closegame',[matkagame::class,'closegame']);
 Route::get('/activeluckynum',[matkagame::class,'activeluckynumber']);
 Route::post('/timeparser',[matkagame::class,'timeparser']);
+Route::post('/playerpicks',[matkagame::class,'playerpicks']);
 
 // Spin Wheel
 Route::post('/createspin',[spinw::class,'makeSpin']);

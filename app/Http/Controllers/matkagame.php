@@ -930,4 +930,21 @@ class matkagame extends Controller
             'data' => null // You can include additional data if needed
         ], 200);
     }
+    public function playerpicks(Request $request)
+    {
+        $gameId = $request->input('mid');
+        $playerid = $request->input('playerid');
+
+        $gamePicks = MatkaNumbers::where('mid', $gameId)
+            ->where('mplayer', $playerid)
+            ->get();
+            
+        return response()->json([
+            'responseCode' => 200,
+            'success' => true,
+            'responseMessage' => 'Number of Balls Picked by player.',
+            'responseData' => $gamePicks,
+        ], 200);
+    }
+
 }
