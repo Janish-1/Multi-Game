@@ -957,18 +957,18 @@ class matkagame extends Controller
                 'message' => 'No open game found',
             ], 404);
         }
-    
+
         $timeStarted = $game->created_at;
         $createdAt = Carbon::parse($timeStarted);
-    
+
         // Add 4 hours to the created_at timestamp
         $adjustedCreatedAt = $createdAt->addHours(4);
-    
+
         $remainingTimeInMinutes = now()->diffInMinutes($adjustedCreatedAt);
-    
+
         $remainingHours = floor($remainingTimeInMinutes / 60);
         $remainingMinutes = $remainingTimeInMinutes % 60;
-    
+
         return response()->json([
             'status' => 'success',
             'code' => 200,
@@ -981,5 +981,31 @@ class matkagame extends Controller
                 'game' => $game,
             ],
         ], 200);
+    }
+    public function getlastwin(Request $request)
+    {
+        $playerid = $request->input('playerid');
+        $lastplayedgame = matkanumbers::where('mplayer', $playerid)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        if (!$lastplayedgame) {
+            return response()->json([
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'No Last Game Found',
+            ]);
+        }
+        $lastplayedgameid = $lastplayedgame->mid;
+        $playerpicks = matkanumbers::where('mplayer',$playerid)
+                                    ->where('mid',$lastplayedgameid)
+                                    ->get();
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'message' => 'All Picks retrieved successfully',
+            'data' => [
+                'playerpicks' => $playerpicks,
+            ],
+        ]);
     }
 }
