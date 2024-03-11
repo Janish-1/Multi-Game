@@ -801,26 +801,26 @@ class matkagame extends Controller
             $mstatus = "open";
 
             $mid = mt_rand(100000, 999999);
-    
+
             $matkaGame = MatkaGames::create([
                 'mid' => $mid,
                 'mstatus' => $mstatus,
             ]);
-    
+
             if ($matkaGame) {
-    
+
                 Websetting::where('id', 1)
                     ->update([
                         'lucky_num_status' => 0
                     ]);
-    
+
                 $responseData = [
                     'responseCode' => 201,
                     'success' => true,
                     'responseMessage' => 'Matka game created successfully.',
                     'responseData' => $matkaGame, // Include the created Matka game data in the response
                 ];
-    
+
                 return response()->json($responseData, 201); // HTTP status code 201 for successful resource creation
             } else {
                 $errorResponse = [
@@ -829,9 +829,9 @@ class matkagame extends Controller
                     'responseMessage' => 'Failed to create Matka game.',
                     'responseData' => null,
                 ];
-    
+
                 return response()->json($errorResponse, 500);
-            }    
+            }
         }
 
         $responseData = [
@@ -938,7 +938,7 @@ class matkagame extends Controller
         $gamePicks = MatkaNumbers::where('mid', $gameId)
             ->where('mplayer', $playerid)
             ->get();
-            
+
         return response()->json([
             'responseCode' => 200,
             'success' => true,
@@ -946,5 +946,40 @@ class matkagame extends Controller
             'responseData' => $gamePicks,
         ], 200);
     }
+    public function timeLeft(Request $request)
+    {
+        $game = matkagames::where('mstatus', 'open')->first();
 
+        if (!$game) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'No open game found',
+            ], 404);
+        }
+    
+        $timeStarted = $game->created_at;
+        $createdAt = Carbon::parse($timeStarted);
+    
+        // Add 4 hours to the created_at timestamp
+        $adjustedCreatedAt = $createdAt->addHours(4);
+    
+        $remainingTimeInMinutes = now()->diffInMinutes($adjustedCreatedAt);
+    
+        $remainingHours = floor($remainingTimeInMinutes / 60);
+        $remainingMinutes = $remainingTimeInMinutes % 60;
+    
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'message' => 'Adjusted time left for the open game',
+            'data' => [
+                'remaining_time' => [
+                    'hours' => $remainingHours,
+                    'minutes' => $remainingMinutes,
+                ],
+                'game' => $game,
+            ],
+        ], 200);
+    }
 }
