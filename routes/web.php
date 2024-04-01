@@ -5,6 +5,7 @@ use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Faq\FaqController;
 use App\Http\Controllers\matkagame;
 use App\Http\Controllers\Player\PlayerController;
+use App\Http\Controllers\RestApi\PaymentGateway\Razorpay\RazorpayController;
 use App\Http\Controllers\SpecialOffer\SpecialofferController;
 use App\Http\Controllers\Shopcoin\ShopcoinController;
 use App\Http\Controllers\Bidvalue\BidConteoller;
@@ -297,4 +298,7 @@ Route::get('payment/failed', function () {
 
 Route::post('/paymentsuccess', [complete::class, 'completePay']);
 
-Route::post('/testpayment', [initiate::class, 'createpaymentreq']);
+Route::get('/razorpayform', [initiate::class, 'showPaymentForm']);
+Route::post('/payment/form', [RazorpayController::class, 'Initiate'])->name('payment.form');
+Route::get('/payment/page', [initiate::class, 'paymentPage'])->name('payment.page');
+Route::post('/paymentsuccess', [complete::class, 'completePay']);

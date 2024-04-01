@@ -9,49 +9,32 @@ use App\Models\Transaction\Transaction;
 
 class initiate extends Controller
 {
-    public function createpaymentreq(Request $request)
+    public function showPaymentForm(Request $request)
     {
-        // Retrieve form input data
-        $userid = $request->input('player_id');
-        $orderID = $request->input('data-order_id');
-        $key = 'rzp_test_eDWrhtXNOjpjcK';
-        $amount = $request->input('data-amount');
-        $currency = $request->input('data-currency');
+        // Extract data from the URL parameters or any other source
+        $amount = $request->input('amount');
+        $name = $request->input('name'); // Encode the name parameter
+        $phone = $request->input('phone');
+        $Player_ID = $request->input('Player_ID');
+        $email = $request->input('email');
 
-        $api = new Api('rzp_test_eDWrhtXNOjpjcK', 'LiS0TAY2lZXeEthCxjnHDoYv'); // Initialize Razorpay API instance
+        // Make API request to get the URL with data
+        $apiUrl = route('payment.page', [
+            'amount' => $amount,
+            'name' => $name,
+            'phone' => $phone,
+            'Player_ID' => $Player_ID,
+            'email' => $email,
+        ]);
 
-        // Create an order
-        $order = $api->order->create(array(
-            'amount' => $amount, // Amount in paise (e.g., ₹500)
-            'currency' => 'INR',
-            'payment_capture' => 1 // Auto capture payments
-        ));
+        // Redirect the user to the API URL
+        return response()->json([
+            "url" => $apiUrl
+        ]);
+    }
 
-        $orderID = $order->id; // Get the order ID
-
-        // Save transaction details to the Transaction table
-        $transaction = new Transaction();
-        // Assuming userid and other necessary fields need to be populated
-        $transaction->userid = $userid; // Assuming userid is available in the request
-        $transaction->order_id = $orderID;
-        $transaction->amount = $amount;
-        $transaction->status = 'Pending'; // Assuming initial status is 'Pending'
-        $transaction->trans_date = now(); // Assuming transaction date is current date-time
-        $transaction->save();
-
-        // Form HTML string
-        $form = '<form action="https://localhost:8000/complete.php" method="POST">
-                    <script src="https://checkout.razorpay.com/v1/checkout.js"
-                            data-key="' . $key . '"
-                            data-amount="' . $amount . '"
-                            data-currency="' . $currency . '"
-                            data-order_id="' . $orderID . '"
-                            data-buttontext="Pay with Razorpay"
-                    </script>
-                    <input type="hidden" custom="Hidden Element" name="hidden">
-                </form>';
-
-        // Return the form HTML
-        return response($form);
+    public function paymentPage(Request $request)
+    {
+        return view('razorpay-form', $request->all());
     }
 }
