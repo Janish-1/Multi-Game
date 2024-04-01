@@ -86,6 +86,15 @@
             </ul>
         </li>
 
+        <li class="nav-item"><a class="d-flex align-items-center" href="javascript:void(0);"><i class="las la-exchange-alt"></i><span class="menu-title text-truncate" data-i18n="Invoice">Coins Handling</span></a>
+            <ul class="menu-content">
+                <li><a class="d-flex align-items-center" href="{{ url('/') }}/payment/page"><i class="las la-star"></i><span class="menu-item" data-i18n="List">Add Money</span></a>
+                </li>
+                <li><a class="d-flex align-items-center" href="{{ url('/')}}/admin/shop/coinsupdate"><i class="las la-star"></i><span class="menu-item" data-i18n="Preview">Update Money</span></a>
+                </li>
+            </ul>
+        </li>
+
         <li class="nav-item"><a class="d-flex align-items-center" href="javascript:void(0);"><i class="las la-question-circle"></i><span class="menu-title text-truncate" data-i18n="Invoice">FAQ</span></a>
             <ul class="menu-content">
                 <li><a class="d-flex align-items-center" href="{{ url('/') }}/admin/faq/all"><i class="las la-star"></i><span class="menu-item" data-i18n="List">All FAQ</span></a>

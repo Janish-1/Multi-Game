@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\CoinsHandler;
 use App\Http\Controllers\Faq\FaqController;
 use App\Http\Controllers\matkagame;
 use App\Http\Controllers\Player\PlayerController;
@@ -123,6 +124,7 @@ Route::group(['middleware' => 'admin_auth'], function () {
         Route::post('/shop/coin/delete/{id}', [ShopcoinController::class, 'delete']);
         Route::get('/shop/coin/edit/{id}', [ShopcoinController::class, 'edit']);
         Route::post('/shop/coin/update/{id}', [ShopcoinController::class, 'update']);
+        Route::get('/shop/coinsupdate',[ShopcoinController::class,'shopcoin'])->name('admin.Shopcoin.updatecoins');
 
         //now create bid coin value
         Route::get('/bid/coin', [BidConteoller::class, 'index']);
@@ -278,10 +280,6 @@ Route::get('/s', function () {
 
 
 Route::post('/contact/now', [FrontController::class, 'ContactNow'])->name('create.contact.new');
-// Route::get('/a', function () {
-//     return view("front.AddCoin");
-// });
-//Route::post('/submit/coin/request/now', [FrontController::class, 'AddCoinRequest'])->name('submit.coin.request.new');
 
 //now front routing
 Route::get('/cashfree/payment', [CashfreeController::class, 'Cashfree']);

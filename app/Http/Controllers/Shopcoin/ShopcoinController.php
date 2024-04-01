@@ -72,4 +72,8 @@ class ShopcoinController extends Controller
          }
 
       }
+
+      public function shopcoin(){
+        return view('admin.Shopcoin.updatecoins');
+      }
 }

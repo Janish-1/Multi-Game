@@ -79,7 +79,7 @@ Route::post('/addTotalCoin',[PlayerController::class, 'addTotalCoin']);
 // Get TotalCoin
 Route::get('/getTotalCoin',[PlayerController::class, 'getTotalCoin']);
 // Update TotalCoin
-Route::put('/updateTotalCoin',[PlayerController::class, 'updateTotalCoin']);
+Route::put('/updateTotalCoin',[PlayerController::class, 'updateTotalCoin'])->name('update.total.coin');
 Route::delete('/resetTotalCoin',[PlayerController::class, 'resetTotalCoin']);
 Route::post('/processplayerentry', [PlayerController::class, 'processPlayerFee']);
 Route::post('/process-all-players-entry', [PlayerController::class, 'processAllPlayersFee']);
