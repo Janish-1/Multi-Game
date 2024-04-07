@@ -923,6 +923,44 @@ class matkagame extends Controller
             }
         }
 
+        if (!$game1 & !$game2) {
+            $mstatus = "open";
+
+            $mid = mt_rand(100000, 999999);
+
+            $matkaGame = MatkaGames::create([
+                'mid' => $mid,
+                'mstatus' => $mstatus,
+            ]);
+
+            if ($matkaGame) {
+
+                Websetting::where('id', 1)
+                    ->update([
+                        'lucky_num_status' => 0
+                    ]);
+
+                $responseData = [
+                    'responseCode' => 201,
+                    'success' => true,
+                    'responseMessage' => 'Matka game created successfully.',
+                    'responseData' => $matkaGame, // Include the created Matka game data in the response
+                ];
+
+                return response()->json($responseData, 201); // HTTP status code 201 for successful resource creation
+            } else {
+                $errorResponse = [
+                    'responseCode' => 500,
+                    'success' => false,
+                    'responseMessage' => 'Failed to create Matka game.',
+                    'responseData' => null,
+                ];
+
+                return response()->json($errorResponse, 500);
+            }
+
+        }
+
         return response()->json([
             'status' => 'success',
             'code' => 200,
@@ -996,9 +1034,9 @@ class matkagame extends Controller
             ]);
         }
         $lastplayedgameid = $lastplayedgame->mid;
-        $playerpicks = matkanumbers::where('mplayer',$playerid)
-                                    ->where('mid',$lastplayedgameid)
-                                    ->get();
+        $playerpicks = matkanumbers::where('mplayer', $playerid)
+            ->where('mid', $lastplayedgameid)
+            ->get();
         return response()->json([
             'status' => 'success',
             'code' => 200,

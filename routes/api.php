@@ -76,8 +76,10 @@ Route::post('/ads/updateimage/e', [AdsController::class, 'UpdateAde'])->name('up
 Route::get('/getads',[AdsController::class, 'getAllAds']);
 Route::post('/tournament/winner',[TournamentController::class, 'tournamentwinner']);
 Route::post('/addTotalCoin',[PlayerController::class, 'addTotalCoin']);
+
 // Get TotalCoin
 Route::get('/getTotalCoin',[PlayerController::class, 'getTotalCoin']);
+
 // Update TotalCoin
 Route::put('/updateTotalCoin',[PlayerController::class, 'updateTotalCoin'])->name('update.total.coin');
 Route::delete('/resetTotalCoin',[PlayerController::class, 'resetTotalCoin']);
