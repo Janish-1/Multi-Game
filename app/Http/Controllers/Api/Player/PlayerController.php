@@ -816,4 +816,22 @@ class PlayerController extends Controller
         $response = ["message" => 'Leader Board Fetch Success', 'leaderboard' => $userdata];
         return response($response, 200);
     }
+    public function GetByNumber(Request $request)
+    {
+      // Validate the incoming request
+      $request->validate([
+        'userphone' => 'required|string'
+      ]);
+  
+      // Find the user by phone number
+      $user = Userdata::where('userphone', $request->userphone)->first();
+  
+      // Check if user exists
+      if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+      }
+  
+      // Return user details
+      return response()->json($user, 200);
+    }
 }

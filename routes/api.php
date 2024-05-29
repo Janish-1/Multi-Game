@@ -165,3 +165,5 @@ Route::get('/newleaderboard',[PlayerController::class,'newleaderboard']);
 // Snake Game
 Route::post('/increasesnakewin',[snakegame::class,'increaseSnakeWin']);
 Route::post('/increasesnakeloss',[snakegame::class,'increaseSnakeLoss']);
+
+Route::post('/player/profile-by-phone', [PlayerController::class, 'GetByNumber']);

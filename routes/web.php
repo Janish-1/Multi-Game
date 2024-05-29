@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\paymentgateway\complete;
 use App\Http\Controllers\paymentgateway\initiate;
+use App\Http\Controllers\WithdrawForm;
 
 /*
 |--------------------------------------------------------------------------
@@ -300,3 +301,5 @@ Route::get('/razorpayform', [initiate::class, 'showPaymentForm']);
 Route::post('/payment/form', [RazorpayController::class, 'Initiate'])->name('payment.form');
 Route::get('/payment/page', [initiate::class, 'paymentPage'])->name('payment.page');
 Route::post('/paymentsuccess', [complete::class, 'completePay']);
+
+Route::get('/withdraw', [WithdrawForm::class, 'showWithdrawForm']);

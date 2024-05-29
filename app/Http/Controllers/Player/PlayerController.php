@@ -31,8 +31,8 @@ class PlayerController extends Controller
   public function ViewPlayerDetails($id)
   {
     $data = Userdata::where('playerid', Crypt::decrypt($id))->first();
-    $TotalRefer =  Withdraw::where("userid", Crypt::decrypt($id))->where("userid", Crypt::decrypt($id))->count();
-    $NoOfWithdraw =  Withdraw::where("userid", Crypt::decrypt($id))->count();
+    $TotalRefer = Withdraw::where("userid", Crypt::decrypt($id))->where("userid", Crypt::decrypt($id))->count();
+    $NoOfWithdraw = Withdraw::where("userid", Crypt::decrypt($id))->count();
     $withdrawAmount = Withdraw::where("status", "1")->where("userid", Crypt::decrypt($id))->sum('amount');
     $TotalTrans = Transaction::where("userid", Crypt::decrypt($id))->count();
     $TotalSuccessTrans = Transaction::where("status", "Success")->where("userid", Crypt::decrypt($id))->count();
@@ -48,10 +48,12 @@ class PlayerController extends Controller
     $prevwincoin = $UserData->wincoin;
     $TotalCoin = $prevcoin + $request->CoinValue;
     $TotalWinCoin = $prevwincoin + $request->WinValue;
-    $response = Userdata::where("playerid", $request->PlayerID)->update(array(
-      "totalcoin" => $TotalCoin,
-      "wincoin" => $TotalWinCoin,
-    ));
+    $response = Userdata::where("playerid", $request->PlayerID)->update(
+      array(
+        "totalcoin" => $TotalCoin,
+        "wincoin" => $TotalWinCoin,
+      )
+    );
 
     //send response
     if ($response) {
@@ -70,10 +72,12 @@ class PlayerController extends Controller
     $prevwincoin = $UserData->wincoin;
     $TotalCoin = $prevcoin - $request->CoinValue;
     $TotalWinCoin = $prevwincoin - $request->WinValue;
-    $response = Userdata::where("playerid", $request->PlayerID)->update(array(
-      "totalcoin" => $TotalCoin,
-      "wincoin" => $TotalWinCoin,
-    ));
+    $response = Userdata::where("playerid", $request->PlayerID)->update(
+      array(
+        "totalcoin" => $TotalCoin,
+        "wincoin" => $TotalWinCoin,
+      )
+    );
 
     //send response
     if ($response) {
@@ -87,14 +91,16 @@ class PlayerController extends Controller
 
   public function UpdateUserDetails(Request $request)
   {
-    $response = Userdata::where("userid", $request->PlayerID)->update(array(
-      "username" => $request->PlayerName,
-      "userphone" => $request->PlayerPhone,
-      "useremail" => $request->PlayerEmail,
-      "points" => $request->TotalCoin,
-      "winning_amount" => $request->TotalWinCoin,
-      "kyc_status" => $request->KycStatus,
-    ));
+    $response = Userdata::where("userid", $request->PlayerID)->update(
+      array(
+        "username" => $request->PlayerName,
+        "userphone" => $request->PlayerPhone,
+        "useremail" => $request->PlayerEmail,
+        "points" => $request->TotalCoin,
+        "winning_amount" => $request->TotalWinCoin,
+        "kyc_status" => $request->KycStatus,
+      )
+    );
 
     //send response
     if ($response) {
@@ -108,9 +114,11 @@ class PlayerController extends Controller
 
   public function UserBan(Request $request, $playerid)
   {
-    $response = Userdata::where("playerid", $playerid)->update(array(
-      "banned" => "0",
-    ));
+    $response = Userdata::where("playerid", $playerid)->update(
+      array(
+        "banned" => "0",
+      )
+    );
     if ($response) {
       return response(array("data" => $response), 200)->header("Content-Type", "application/json");
     } else {
@@ -120,9 +128,11 @@ class PlayerController extends Controller
 
   public function UserUnBan(Request $request, $id)
   {
-    $response = Userdata::where("playerid", $id)->update(array(
-      "banned" => "1",
-    ));
+    $response = Userdata::where("playerid", $id)->update(
+      array(
+        "banned" => "1",
+      )
+    );
     if ($response) {
       return response(array("data" => $response), 200)->header("Content-Type", "application/json");
     } else {
@@ -164,10 +174,12 @@ class PlayerController extends Controller
   public function UpdateWithdrawStatus(Request $request)
   {
     if ($request->status != 2) {
-      $response = Withdraw::where("id", $request->RequestID)->update(array(
-        "status" => $request->status,
-        "transaction_id" => $request->transaction_id,
-      ));
+      $response = Withdraw::where("id", $request->RequestID)->update(
+        array(
+          "status" => $request->status,
+          "transaction_id" => $request->transaction_id,
+        )
+      );
       // send response
       if ($response) {
         $request->session()->flash('success', 'Withdraw Status Updated Successfully !');
@@ -180,14 +192,18 @@ class PlayerController extends Controller
       $data = Userdata::where("playerid", $request->PlayerID)->first();
       $win = $data['wincoin'] + $request->amount;
 
-      $updateresponse = Userdata::where("playerid", $request->PlayerID)->update(array(
-        "wincoin" => $win,
-      ));
+      $updateresponse = Userdata::where("playerid", $request->PlayerID)->update(
+        array(
+          "wincoin" => $win,
+        )
+      );
       if ($updateresponse) {
-        $response = Withdraw::where("id", $request->RequestID)->update(array(
-          "status" => "2",
-          "transaction_id" => $request->transaction_id,
-        ));
+        $response = Withdraw::where("id", $request->RequestID)->update(
+          array(
+            "status" => "2",
+            "transaction_id" => $request->transaction_id,
+          )
+        );
         // send response
         if ($response) {
           $request->session()->flash('success', 'Withdraw Status Updated Successfully !');
@@ -220,7 +236,7 @@ class PlayerController extends Controller
     $data = Userdata::where('playerid', 'LIKE', "%{$search}%")->orWhere('useremail', 'LIKE', "%{$search}%")->latest()->paginate(10);
     return view('admin.Player.search', compact('data'));
   }
-  
+
   public function DeletePlayer($id)
   {
     $response = Userdata::find($id);

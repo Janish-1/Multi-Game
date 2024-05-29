@@ -20,7 +20,6 @@
 
         form {
             position: relative;
-            /* Add position relative to allow absolute positioning of loading bar */
             width: 90%;
             max-width: 400px;
             background-color: #ffffff;
@@ -28,7 +27,6 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             z-index: 1;
-            /* Ensure the form stays above the loading bar */
         }
 
         .form-group {
@@ -43,18 +41,18 @@
             font-size: 20px;
             color: #333;
         }
-
     </style>
 </head>
 
 <body>
 
-    <form id="paymentForm" action="{{ route('payment.form') }}" method="POST" >
-        @csrf <!-- CSRF token for Laravel -->
+<form id="paymentForm" action="{{ route('payment.form') }}" method="POST" >
+            <!-- CSRF token for Laravel -->
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         <div class="form-group">
             <label for="amount">Amount (in paise)</label>
-            <input type="number" class="form-control" id="amount" name="amount"  required>
+            <input type="number" class="form-control" id="amount" name="amount" required>
         </div>
 
         <div class="form-group">
@@ -82,7 +80,30 @@
 
     <!-- Include Bootstrap JS (Assuming you have it locally or use a CDN) -->
     <script src="path/to/bootstrap.js"></script>
+    <script>
+        // Function to get query parameter value by name
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
 
+    document.addEventListener("DOMContentLoaded", function() {
+        // Check if the form has already been submitted
+        if (!window.location.search.includes("submitted=true")) {
+            document.getElementById('amount').value = getQueryParameter('amount');
+            document.getElementById('name').value = getQueryParameter('name');
+            document.getElementById('email').value = getQueryParameter('email');
+            document.getElementById('phone').value = getQueryParameter('phone');
+            document.getElementById('Player_ID').value = getQueryParameter('Player_ID');
+
+            // Append a parameter to the URL to indicate form submission
+            window.location.search += "&submitted=true";
+            
+            // Submit the form automatically
+            document.getElementById('paymentForm').submit();
+        }
+    });
+    </script>
 </body>
 
 </html>

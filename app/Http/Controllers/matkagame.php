@@ -689,6 +689,7 @@ class matkagame extends Controller
 
         return response()->json($responseData, 200);
     }
+
     public function statuschecker(Request $request)
     {
         $game1 = matkagames::where('mstatus', 'open')->first();
@@ -701,6 +702,8 @@ class matkagame extends Controller
 
             if ($hoursPassed >= 4) {
                 $game1->mstatus = 'lock';
+                $game1->save();
+
                 Websetting::where('id', 1)
                     ->update([
                         'lucky_num_status' => 1
@@ -720,7 +723,7 @@ class matkagame extends Controller
             $created_at = Carbon::parse($time_started);
             $minutesPassed = now()->diffInMinutes($created_at);
 
-            if ($minutesPassed >= 270) {
+            if ($minutesPassed >= 30) {
                 $gameId = $game2->mid;
 
                 $game2->update([
